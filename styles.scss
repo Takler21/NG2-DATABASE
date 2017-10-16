@@ -1,0 +1,287 @@
+﻿@import "mixin";
+
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.btn {
+    font-size: 12px;
+}
+
+/*.btn-inverse{
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    @include linear-gradient(to bottom, #444444, #222222);
+    background-repeat: repeat-x;
+    border-color: #222222 #222222 #000000;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    &:hover{
+        color: #ffffff;
+        background-color: #222222;
+}
+    &:active{
+        color: #ffffff;
+        background-color: #222222;
+    }
+}*/
+
+.boton {
+    color: #333333;
+    font-size: 12px;
+    font-family: arial;
+    line-height: 28px;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 7px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 9px;
+    padding-right: 9px;
+    position: relative;
+    box-shadow: 1px 0 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    height: 31px;
+    min-width: 135px;
+    display: inline-block;
+    cursor: pointer;
+
+    @include linear-gradient(to bottom, #f0f0f0 0%, #e8e8e8 23%, #d0d0d0 70%, #cccccc 93%, lightgray 97%, #f8f8f8 100%);
+
+    &:hover {
+        @include linear-gradient(to bottom, #d8d8d8 5%, white 8%, #d8d8d8 47%, #cccccc 49%, #b7b7b7 92%, #777777 100%);
+    }
+
+    &:active {
+        @include linear-gradient(to bottom, #a0a0a0 0%, #c4c4c4 9%, #d0d0d0 9%, #e8e8e8 28%, #c6c6c6 74%);
+    }
+
+    &.accion {
+        color: white;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) inset;
+        @include linear-gradient(to bottom, #717171 3%, #717171 41%, #6f6f6f 48%, #5d5d5d 72%, #595959 83%, #5a5a5a 86%, #636363 93%, #737373 100%);
+
+        &:hover {
+            @include linear-gradient(to bottom, #5b5b5b 4%, #636363 43%, #565656 45%, #4c4c4c 90%, #2b2b2b 100%);
+        }
+
+        &:active {
+            @include linear-gradient(to bottom, #2b2b2b 1%, #4c4c4c 90%);
+        }
+    }
+
+    &.predeterminado {
+        color: white;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) inset;
+        background: #9a0000;
+
+        &:hover {
+            background: #7a0000;
+        }
+
+        &:active {
+            background: #650000;
+        }
+    }
+}
+
+.cerrar-Sesion {
+    float: right;
+    margin-top: 2em;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+a {
+    color: #999999;
+    cursor: pointer;
+    text-decoration: underline;
+    outline: none;
+
+    &:hover {
+        color: #ed1c2e;
+    }
+
+    &:active {
+        outline: none;
+    }
+}
+
+.pie-pagina {
+    li {
+        display: inline-block;
+        float: right;
+        margin-left: 10px;
+        border-left: 1px solid #777777;
+        padding-left: 10px;
+        height: 1em;
+        line-height: 1em;
+
+        a {
+            color: white;
+            font-size: 0.87em;
+        }
+    }
+
+    li:last-child {
+        border-left: none;
+    }
+}
+
+.erroresSeccion {
+    display: none;
+    clear: both;
+    font-weight: normal;
+}
+
+
+
+.bloque-formulario {
+    margin-top: 20px;
+    padding-top: 20px;
+    background-color: #eaeaea;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: inset 0 0 0 1px #999;
+
+    legend {
+        color: white;
+        font-size: 1.3em;
+        font-weight: bold;
+        line-height: 1.5em;
+        background-color: #666;
+        margin-bottom: 0;
+        padding: 9px;
+        padding-left: 18px;
+        border-radius: 6px;
+        border-bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+        display: block;
+
+        &.sin-margen {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.listado-links {
+    padding-bottom: 15px;
+
+    a {
+        text-decoration: none;
+        color: #333333;
+    }
+}
+
+.pasosInicio {
+    padding-bottom: 10px;
+
+    li {
+        cursor: pointer;
+        min-height: 265px;
+        margin-left: 5px;
+    }
+}
+
+.boxList {
+    .dim4 li {
+        width: 205px;
+    }
+
+    li {
+        cursor: default;
+        position: relative;
+        min-height: 100%;
+        float: left;
+        border: 1px solid #a0a0a0;
+        border-radius: 10px;
+        padding: 10px;
+        margin-right: 8px;
+        box-shadow: inset 3px 4px 12px -5px #000;
+        //background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        @include linear-gradient(to bottom, #ffffff 0%, #fefefe 100%);
+        @include transform-scale(1,1,250ms,ease-out);
+
+        &:hover {
+            @include transform-scale(1.03,1.03, 250ms, ease-out);
+        }
+    }
+}
+//Mucha anidacion.
+.seccionConEstados {
+    clear: both;
+
+    .item {
+        /*display: block;
+        margin: 10px;
+        padding: 5px;
+        border-radius: 6px;
+        position: relative;
+        cursor: pointer;
+        color: black;
+        background-color: rgba(255, 255, 255, 0.9);*/
+        /*&.erroresSeccion {
+            display: none;
+            clear: both;
+            font-weight: normal;
+        }*/
+        .mostrarErrores {
+            color: #900000;
+            font-weight: normal;
+            text-decoration: underline;
+            display: inline-block;
+            float: left;
+            clear: both;
+        }
+
+        .apartadosSeccion {
+            fieldset legend {
+                background-color: #aaaaaa;
+                color: #222222;
+            }
+        }
+
+        fieldset legend {
+            color: #504025;
+            font-size: 11px;
+            font-weight: normal;
+            margin: 0;
+            padding: 3px;
+            border-bottom: 0;
+            text-shadow: none;
+            position: static;
+            display: inline-block;
+        }
+
+        .avisoFieldset {
+            legend {
+                background-color: rgba(224, 178, 33, 0.44);
+            }
+
+            &:hover legend {
+                background-color: #ffa300;
+                color: #000000;
+            }
+        }
+
+        .errorFieldset {
+            legend {
+                background-color: rgba(190, 46, 46, 0.24);
+
+                &:hover {
+                    background-color: #CF7079;
+                    color: black;
+                }
+            }
+
+            legend .eliminar {
+                text-decoration: none;
+                color: #333333;
+            }
+        }
+    }
+}
