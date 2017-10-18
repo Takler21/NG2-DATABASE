@@ -1,13 +1,141 @@
 ﻿@import "mixin";
-
+///Componentes pequeños especificar fuera y luego usar @extend
 * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
+body {
+    font-size: 0.75em;
+    font-family: Arial;
+}
+
+//aqui porcentaje y min-width
+.centrado {
+    width: 72.5em;
+    margin: 0 auto;
+}
+
+#menuEspecial {
+    display: block;
+    overflow: hidden;
+    margin: 0.5em 0 0.5em;
+
+    ul {
+        background-color: #ccc;
+        text-align: right;
+        margin: 0.1em 0;
+    }
+
+    li {
+        display: inline;
+        overflow: auto;
+    }
+
+    a {
+        color: #666;
+        padding: 0 0.8em;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .logo {
+        background-color: #fff;
+        float: right;
+        padding: 0 0 0 1em;
+
+        h1 {
+            display: inline;
+        }
+
+        a {
+            background: url(../img/logo_navarra.gif) left top no-repeat;
+            width: 120px;
+            height: 0.506em;
+            display: block;
+        }
+
+        span {
+            display: none;
+        }
+    }
+}
+
+.cerrar-Sesion {
+    float: right;
+    margin-top: 2em;
+    text-decoration: none;
+    margin-right: 0.833em;
+}
+
+.pasos {
+    height: 15px;
+    background-color: #333333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: 0;
+    position: relative;
+    //cambiar.
+    width: 72.5em;
+    margin: 0 auto;
+
+    nav {
+        width: 85%;
+        float: right;
+
+        a {
+            display: inline;
+            position: relative;
+            text-align: center;
+            width: 23%;
+            float: left;
+
+             .numero {
+                border: 0 solid #333;
+                border-radius: 35px;
+                background-color: #333;
+                color: #fff;
+                font-size: 1.7em;
+                width: 35px;
+                height: 35px;
+                position: absolute;
+                left: 50%;
+                margin-left: -17px;
+                line-height: 35px;
+                text-indent: -2px;
+                top: -10px;
+                @include transform-scale(1,1,250ms,ease-out);
+
+                &:hover {
+                    @include transform-scale(1.3,1.3,250ms,ease-out);
+                }
+            }
+             //no lo coge
+            .activo{
+                background-color: white;
+                width: 52px;
+    height: 52px;
+                -webkit-transform: none !important;
+                -webkit-transform: none !important;
+                transform: none !important;
+
+                &:hover {
+                    -webkit-transform: none !important;
+                    -webkit-transform: none !important;
+                    transform: none !important;
+                }
+            }
+
+            .texto {
+                display: inline-block;
+                padding-top: 30px;
+            }
+        }
+    }
+}
+
 .btn {
-    font-size: 12px;
+    font-size: 1em;
 }
 
 /*.btn-inverse{
@@ -28,25 +156,20 @@
 }*/
 
 .boton {
-    color: #333333;
-    font-size: 12px;
-    font-family: arial;
-    line-height: 28px;
+    color: #333;
+    font-size: 1em;
+    line-height: 2.333em;
     text-align: center;
-    text-decoration: none;
     margin-top: 7px;
-    margin-left: 2px;
-    margin-right: 2px;
-    padding-left: 9px;
-    padding-right: 9px;
-    position: relative;
-    box-shadow: 1px 0 3px rgba(0, 0, 0, 0.3);
-    border: 1px solid #c4c4c4;
-    border-radius: 5px;
-    height: 31px;
-    min-width: 135px;
-    display: inline-block;
-    cursor: pointer;
+    margin-left: .167em;
+    margin-right: .167em;
+    padding-left: .75em;
+    padding-right: .75em;
+    box-shadow: 0.083em 0 0.25em rgba(0,0,0,.3);
+    border: .083em solid #c4c4c4;
+    border-radius: .417em;
+    height: 2.583em;
+    min-width: 11.25em;
 
     @include linear-gradient(to bottom, #f0f0f0 0%, #e8e8e8 23%, #d0d0d0 70%, #cccccc 93%, lightgray 97%, #f8f8f8 100%);
 
@@ -60,7 +183,7 @@
 
     &.accion {
         color: white;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) inset;
+        box-shadow: 0.083em 0.083em 0.25em rgba(0, 0, 0, 0.5) inset;
         @include linear-gradient(to bottom, #717171 3%, #717171 41%, #6f6f6f 48%, #5d5d5d 72%, #595959 83%, #5a5a5a 86%, #636363 93%, #737373 100%);
 
         &:hover {
@@ -74,7 +197,7 @@
 
     &.predeterminado {
         color: white;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) inset;
+        box-shadow: 0.083em 0.083em 0.25em rgba(0, 0, 0, 0.5) inset;
         background: #9a0000;
 
         &:hover {
@@ -87,12 +210,7 @@
     }
 }
 
-.cerrar-Sesion {
-    float: right;
-    margin-top: 2em;
-    text-decoration: none;
-    margin-right: 10px;
-}
+
 
 a {
     color: #999999;
@@ -108,8 +226,23 @@ a {
         outline: none;
     }
 }
+///pendiente
+#footer {
+    position: relative;
+    height: 65px;
+    clear: both;
+}
 
 .pie-pagina {
+    position: relative;
+    clear: both;
+    display: block;
+    background-color: #333333;
+    height: 65px;
+    width: 73em;
+    margin: 0 auto;
+
+
     li {
         display: inline-block;
         float: right;
@@ -211,6 +344,45 @@ a {
         }
     }
 }
+
+.avisoFieldset {
+    legend {
+        background-color: rgba(224, 178, 33, 0.44);
+        color: #504025;
+        font-weight: normal;
+    }
+
+    &:hover legend {
+        background-color: #ffa300;
+        color: #000000;
+        font-weight: normal;
+    }
+}
+
+.errorFieldset {
+    legend {
+        background-color: rgba(190, 46, 46, 0.24);
+        color: #504025;
+        text-shadow: none;
+        font-size: 11px;
+        font-weight: normal;
+        margin: 0;
+        position: static;
+        display: inline-block;
+        padding: 3px;
+        border-bottom: 0;
+    }
+
+    &:hover legend {
+        background-color: #CF7079;
+        color: black;
+    }
+
+    legend .eliminar {
+        text-decoration: none;
+        color: #333333;
+    }
+}
 //Mucha anidacion.
 .seccionConEstados {
     clear: both;
@@ -258,30 +430,80 @@ a {
         }
 
         .avisoFieldset {
-            legend {
-                background-color: rgba(224, 178, 33, 0.44);
-            }
-
-            &:hover legend {
-                background-color: #ffa300;
-                color: #000000;
-            }
+            @extend .avisoFieldset;
         }
 
         .errorFieldset {
-            legend {
-                background-color: rgba(190, 46, 46, 0.24);
-
-                &:hover {
-                    background-color: #CF7079;
-                    color: black;
-                }
-            }
-
-            legend .eliminar {
-                text-decoration: none;
-                color: #333333;
-            }
+            @extend .errorFieldset;
         }
     }
+}
+
+.mensaje {
+    border-radius: 10px;
+    padding: 12px;
+    background-color: #366ab2;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 12px;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5) inset;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    text-align: justify;
+    min-height: 4.616em;
+    cursor: default;
+
+    p {
+        display: inline;
+    }
+
+    &.error {
+        background-color: #b70000;
+
+        &:before {
+            font-family: "FontAwesome";
+            content: '\f071';
+            font-size: 18px;
+            color: white;
+            display: inline-block;
+            padding-right: 10px;
+            float: left;
+        }
+    }
+
+    &.aviso {
+        background-color: #F8C134;
+        color: #4d3203;
+
+        &:before {
+            font-family: "FontAwesome";
+            content: "\f06a";
+            font-size: 18px;
+            color: #492406;
+            /* display: inline-block; */
+            padding-right: 10px;
+            float: left;
+            /* text-align: right; */
+        }
+    }
+
+    &:before {
+        font-family: "FontAwesome";
+        content: "\f06a";
+        font-size: 18px;
+        color: white;
+        display: inline-block;
+        padding-right: 10px;
+        float: left;
+        text-align: right;
+    }
+}
+
+[class^="fa-"]:before, [class*=" fa-"]:before {
+    font-family: "FontAwesome";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    padding-right: 5px;
 }
