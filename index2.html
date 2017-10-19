@@ -1,0 +1,203 @@
+﻿<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <title>Renta Navarra</title>
+    <link rel="stylesheet" type="text/css" href="content/reset.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="content/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="content/styles.min.css">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none;
+        }
+
+        ng\:form {
+            display: block;
+        }
+    </style>
+    <script src="app.js"></script>
+</head>
+
+<body ng-controller="globalscopeController" class="ng-scope">
+    <div id="wrap" ng-keypress="cambiarModoLiterales($event)">
+        <div id="main" class="clearfix">
+            <div class="centrado">
+                <div class="cabecera clearfix">
+                    <map title="navegación primer nivel del portal" id="menuEspecial">
+                        <ul>
+                            <li class="logo"><h1><a href=" http//www.navarra.es/home_es/"><span>navarra.es</span></a></h1></li>
+
+                            <li class="primero"><a href="http://www.navarra.es/home_es/" class="ng-binding">Navarra</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Servicios/" class="ng-binding"> Servicios</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Temas/" class="ng-binding"> Temas</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Gobierno+de+Navarra/" class="ng-binding"> Gobierno</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Actualidad/" class="ng-binding"> Actualidad</a></li>
+
+                        </ul>
+                    </map>
+                    <div class="cabeceraIrpf">
+                        <h2 style="color: #9a0000; float:left" class="ng-binding">Renta Navarra</h2>
+                        <a class="cerrar-Sesion icono-plus ng-binding" id="iniciarDeclaracionBtn" ng-click="iniciarNuevaDeclaracion()" ng-show="declaracionCargada()" style="">Iniciar nueva declaración</a>
+                        <a class="cerrar-Sesion icono-print ng-binding" id="imprimirBorradorBtn" ng-click="imprimirBorradorDeclaracion()" ng-show="declaracionCargada()" style="">Imprimir borrador</a>
+                        <a class="cerrar-Sesion icono-lock ng-binding" id="cerrarSesionBtn" ng-click="cerrarSesion()" ng-show="sesionIniciada()"> Cerrar sesión</a>
+                    </div>
+                    <div class="separador-primer-nivel "></div>
+
+                </div>
+            </div>
+
+            <div id="estadoDeclaracion" ng-show="declaracionCargada()" class="centrado" style="">
+                <span style="color:#999999" title="Cada vez que usted modifique su declaración la aplicación guardará un borrador con los últimos cambios realizados." class="ng-binding">Borrador guardado.</span>
+            </div>
+
+            <div class="pasos" ng-show="mostrarAsistenteDeclaracion" style="">
+                <div class="centrado">
+                    <nav>
+
+                        <!-- ngRepeat: o in pasosAsistente --><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope activo">
+                            <span class="numero ng-binding">1</span>
+                            <span class="texto ng-binding">Datos personales y familiares</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">2</span>
+                            <span class="texto ng-binding">Datos económicos</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">3</span>
+                            <span class="texto ng-binding">Resultado de la declaración</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">4</span>
+                            <span class="texto ng-binding">Entrega</span>
+                        </a>
+
+                    </nav>
+                </div>
+            </div>
+            <div class="contenido">
+                <div class="centrado">
+                    <ng-view>
+                        <h3 class="ng-scope ng-binding"> Datos personales y familiares</h3>
+
+                        <div class="info mensaje ng-scope">
+                            <p class="ng-binding"> Por favor revise que los datos personales y familiares son correctos y corrija los errores en caso de haberlos. Recuerde que puede agregar nuevos miembros si su unidad familiar ha cambiado.</p>
+                        </div>
+
+
+                        <fieldset class="bloque-formulario listado-links seccionConEstados ng-scope" id="filiacionFs">
+                            <legend class="sin-margen"> <span class="ng-binding"> Datos personales y familiares</span> </legend>
+                            <!-- ngRepeat: miembro in miembrosUnidadFamiliar --><div class="item clearfix ng-scope" ng-repeat="miembro in miembrosUnidadFamiliar" ng-class="{error: tieneErrores(miembro), aviso:!tieneErrores(miembro) &amp;&amp; tieneAvisos(miembro) }" ng-click="editarMiembro(miembro)">
+                                <div class="fa-user texto ng-binding" id="divMiembroFamilia_4">ignacio Azpíroz Del Cuvillo &nbsp;&nbsp;&nbsp;  (Declarante)</div>
+
+
+                                <a ng-show="sePuedeEliminarMiembro(miembro)" ng-click="eliminarMiembro(miembro); $event.stopPropagation()" class="eliminar icono-trash ng-binding" style="display: none;"> Eliminar</a>
+                                <a ng-class="{'icono-attention': tieneErrores(miembro), 'icono-info': !tieneErrores(miembro) &amp;&amp; tieneAvisos(miembro)}" class="mostrarErrores ng-binding" ng-click="mostrarIncidencias($event, miembro) " ng-show="tieneErrores(miembro) ||  tieneAvisos(miembro)" style="display: none;">
+                                    Mostrar incidencias
+                                </a>
+                                <div class="erroresSeccion" ng-show="tieneErrores(miembro) || tieneAvisos(miembro)" style="display: none;">
+                                    <fieldset class="errorFieldset" ng-show="tieneErrores(miembro)" style="display: none;">
+                                        <legend class="icono-attention ng-binding"> Errores</legend>
+                                        <ul>
+                                            <!-- ngRepeat: (casilla, error) in miembro.errores -->
+                                        </ul>
+                                    </fieldset>
+
+                                    <fieldset class="avisoFieldset" ng-show="tieneAvisos(miembro)" style="display: none;">
+                                        <legend class="icono-info ng-binding">Se han detectado avisos en los familiares marcados en amarillo. Por favor, revise los avisos antes de continuar.</legend>
+                                        <ul>
+                                            <!-- ngRepeat: (casilla, aviso) in miembro.avisos -->
+                                        </ul>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <div class="aviso mensaje ng-scope" ng-show="avisosPendientes &amp;&amp; !erroresPendientes" style="display: none;">
+                            <p class="ng-binding">Se han detectado avisos en los familiares marcados en amarillo. Por favor, revise los avisos antes de continuar.</p>
+                        </div>
+
+                        <div class="error mensaje ng-scope" ng-show="erroresPendientes" style="display: none;">
+                            <p class="ng-binding"> Se han detectado errores en los familiares marcados en rojo. Por favor, solucione los problemas encontrados antes de continuar.</p>
+                        </div>
+
+                        <div class="botonera ng-scope">
+                            <div class="izquierda">
+                                <button type="button" class="boton  ng-binding" ng-click="irA('inicio')" id="aInicioBtn"><span class="fa-chevron-left"></span> Inicio </button>
+                            </div>
+                            <div class="derecha">
+                                <button type="button" class="boton predeterminado ng-binding" ng-click="irADatosEconomicos()" id="aDatosEconomicosBtn"> Datos económicos <span class="fa-chevron-right"></span></button>
+                            </div>
+                            <div class="centro">
+                                <span class="boton-desplegable">
+                                    <button type="button" class="fa-user-plus boton accion dropdown-toggle ng-binding" data-toggle="dropdown" href="#" id="desplegarBtn">
+                                        Agregar miembro a familia
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <!-- ngRepeat: tipoMiembro in tiposMiembro -->
+                                        <li ng-repeat="tipoMiembro in tiposMiembro" class="ng-scope">
+                                            <a ng-click="nuevoMiembro(tipoMiembro)" class="ng-binding">Cónyuge</a>
+                                        </li>
+                                        <li ng-repeat="tipoMiembro in tiposMiembro" class="ng-scope">
+                                            <a ng-click="nuevoMiembro(tipoMiembro)" class="ng-binding">Descendientes, hijos o incapacitados</a>
+                                        </li>
+                                        <li ng-repeat="tipoMiembro in tiposMiembro" class="ng-scope">
+                                            <a ng-click="nuevoMiembro(tipoMiembro)" class="ng-binding">Ascendientes</a>
+                                        </li>
+                                        <li ng-repeat="tipoMiembro in tiposMiembro" class="ng-scope">
+                                            <a ng-click="nuevoMiembro(tipoMiembro)" class="ng-binding">Asistidos</a>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </div>
+
+
+                        </div>
+                    </ng-view>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ayudaOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda">ayuda</h3><button type="button" class="cerrarAyuda imagen" ng-click="cerrarAyuda()" id="cerrarAyudaBtn">volver</button><div class="scrollVentana"></div>  </div>  </div>
+    <div id="datosFiscalesOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda"></h3><button type="button" class="cerrarAyuda imagen ng-binding" ng-click="cerrarDatosFiscales()">btnvolver</button><div class="scrollVentana scrollDF"><!-- ngIf: secuenciasDatosFiscales && secuenciasDatosFiscales.length > 1 --><!-- ngIf: ayudaDatosFiscales --></div>  </div>  </div>
+    <div id="espere" class="ng-scope"> <span id="iconoEspere"></span></div>
+    <footer id="footer" class="pie-pagina">
+        <div class="centrado">
+            <!--<a href="http://www.navarra.es" class="gobierno-navarra imagen">{{'footGobiernoNavarra' | i18n}}</a>-->
+            <img id="ctl00_imgGobiernoPie" src="img/gobierno-navarra.png" alt="Gobierno de Navarra" style="height:39px;width:170px;border-width:0px;float:left;">
+            <ul>
+                <li><a href="http://www.navarra.es/home_es/Indices/Mapa+web/" class="ng-binding">Mapa web</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/avisoLegal.htm" class="ng-binding"> Aviso legal y privacidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/accesibilidad.htm" class="ng-binding">Accesibilidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Indices/Sugerencias/" class="ng-binding"> Contacte con nosotros</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!--browser support -->
+    <script type="text/javascript" src="lib/browser/browser.js"></script>
+    <script>
+        (function () {
+            var br = new Browser();
+            var supportedBrowsers = {
+                'chrome': 20,
+                'safari': 4,
+                'firefox': 16,
+                'iexplorer': 10
+            };
+            if (supportedBrowsers[br.name] == null || supportedBrowsers[br.name] >= br.version)  window.location = "NavegadorNoSoportado.html";
+        })();
+    </script>
+    <script type="text/javascript" src="lib/libsBuild.js"></script>
+    <!--Es campaña o simulador-->
+
+    <script type="text/javascript" src="js/2017/appBuild-d60e97f51d.js"></script>
+
+
+</body>
+</html>
