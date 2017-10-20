@@ -21,6 +21,79 @@ h3 {
     margin-bottom: 0.2193em;
 }
 
+///Intentar omitir el important
+input, select, label {
+    font-size: 1em !important;
+}
+
+select {
+    width: 25%;
+}
+
+.etiqueta {
+    width: 75%;
+    float: left;
+}
+
+.campo {
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+
+    &.error {
+        @include linear-gradient(to right, rgba(226, 18, 18, 0) 0%, rgba(223, 19, 22, 0) 20%, rgba(214, 23, 36, 0.26) 91%, rgba(214, 23, 36, 0.28) 96%);
+
+        .errores {
+            float: right;
+            background-color: #c20000;
+            color: white;
+            font-size: 0.86em;
+            padding-right: 0.833em;
+            border-radius: 0.388em;
+        }
+    }
+
+    &.warning {
+        @include linear-gradient(to right, rgba(239, 173, 19, 0) 0%, rgba(242, 178, 24, 0) 20%, rgba(252, 196, 42, 0.28) 96%, rgba(252, 196, 42, 0.28) 97%);
+
+        .warnings {
+            float: right;
+            background-color: #ffc200;
+            font-size: 0.86em;
+            padding-right: 0.833em;
+            border-radius: 0.388em;
+        }
+    }
+
+    &.requerido label:before {
+        content: "*";
+        color: #d60000;
+        margin-right: 0.513em;
+        font-size: 1.300em;
+        position: relative;
+        top: 4px;
+    }
+
+    input {
+        height: 30px;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5) inset, 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+}
+
+.mensaje-error:before {
+    font-family: "FontAwesome";
+    content: '\f071';
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
+.mensaje-aviso:before {
+    font-family: "FontAwesome";
+    content: '\f06a';
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
 //aqui porcentaje y min-width
 .centrado {
     width: 72.5em;
@@ -303,8 +376,7 @@ a {
     font-weight: normal;
 }
 
-
-
+///Examinar
 .bloque-formulario {
     background-color: #eaeaea;
     box-shadow: inset 0 0 0 1px #999;
@@ -323,6 +395,7 @@ a {
         padding-left: 1.154em;
         text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
         background-color: #666;
+        margin-bottom: 0;
 
         &.sin-margen {
             margin-bottom: 0;
@@ -353,6 +426,7 @@ a {
 .boxList {
     margin: 0;
     padding: 0;
+    margin-bottom: 1.667em;
 
     &.dim4 li {
         width: 23.507%;
@@ -360,8 +434,6 @@ a {
 
     li {
         cursor: default;
-        position: relative;
-        min-height: 100%;
         float: left;
         border: 1px solid #a0a0a0;
         border-radius: 10px;
@@ -376,6 +448,16 @@ a {
             @include transform-scale(1.03,1.03, 250ms, ease-out);
         }
     }
+}
+
+.numeroGrande {
+    font-size: 8.333em;
+    font-weight: bold;
+    color: rgba(100, 100, 100, 0.6);
+    text-shadow: 1px 4px 6px #f3f3f3, 0 0 0 #000, 1px 4px 6px #f3f3f3;
+    position: absolute;
+    bottom: 0.4em;
+    right: 0.1em;
 }
 
 .avisoFieldset {
@@ -441,7 +523,6 @@ a {
 }
 
 .seccionConEstados {
-    clear: both;
 
     .texto {
         margin-top: 0.333em;
