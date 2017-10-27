@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html ng-app="irpf" class="ng-scope">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <title>Renta Navarra</title>
+    <link rel="stylesheet" type="text/css" href="content/reset.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="content/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="content/styles.min.css">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none;
+        }
+
+        ng\:form {
+            display: block;
+        }
+    </style>
+    <script src="app.js"></script>
+</head>
+
+<body ng-controller="globalscopeController" class="ng-scope">
+    <div id="wrap" ng-keypress="cambiarModoLiterales($event)">
+        <div id="main" class="clearfix">
+            <div class="centrado">
+                <div class="cabecera clearfix">
+                    <map title="navegación primer nivel del portal" id="menuEspecial">
+                        <ul>
+                            <li class="logo"><h1><a href=" http//www.navarra.es/home_es/"><span>navarra.es</span></a></h1></li>
+
+                            <li class="primero"><a href="http://www.navarra.es/home_es/" class="ng-binding">Navarra</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Servicios/" class="ng-binding"> Servicios</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Temas/" class="ng-binding"> Temas</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Gobierno+de+Navarra/" class="ng-binding"> Gobierno</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Actualidad/" class="ng-binding"> Actualidad</a></li>
+
+                        </ul>
+                    </map>
+                    <div class="cabeceraIrpf">
+                        <h2 style="color: #9a0000; float:left" class="ng-binding">Renta Navarra</h2>
+                        <a class="cerrar-Sesion icono-plus ng-binding" id="iniciarDeclaracionBtn" ng-click="iniciarNuevaDeclaracion()" ng-show="declaracionCargada()" style="">Iniciar nueva declaración</a>
+                        <a class="cerrar-Sesion icono-print ng-binding" id="imprimirBorradorBtn" ng-click="imprimirBorradorDeclaracion()" ng-show="declaracionCargada()" style="">Imprimir borrador</a>
+                        <a class="cerrar-Sesion icono-lock ng-binding" id="cerrarSesionBtn" ng-click="cerrarSesion()" ng-show="sesionIniciada()"> Cerrar sesión</a>
+                    </div>
+                    <div class="separador-primer-nivel "></div>
+
+                </div>
+            </div>
+
+            <div id="estadoDeclaracion" ng-show="declaracionCargada()" class="centrado" style="">
+                <span style="color:#999999" title="Cada vez que usted modifique su declaración la aplicación guardará un borrador con los últimos cambios realizados." class="ng-binding">Borrador guardado.</span>
+            </div>
+
+            <div class="pasos" ng-show="mostrarAsistenteDeclaracion" style="">
+                <div class="centrado">
+                    <nav>
+
+                        <!-- ngRepeat: o in pasosAsistente --><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">1</span>
+                            <span class="texto ng-binding">Datos personales y familiares</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">2</span>
+                            <span class="texto ng-binding">Datos económicos</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">3</span>
+                            <span class="texto ng-binding">Resultado de la declaración</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope activo">
+                            <span class="numero ng-binding">4</span>
+                            <span class="texto ng-binding">Entrega</span>
+                        </a>
+
+                    </nav>
+                </div>
+            </div>
+            <div class="contenido">
+                <div class="centrado">
+                    <ng-view>
+                        <h3 class="ng-scope ng-binding"> Domiciliación</h3>
+
+                        <div class="info mensaje ng-scope" id="domiciliacion">
+                            <p class="ng-binding"> Esta es la última etapa antes de finalizar su declaración. Por favor, revise sus datos e ingrese los campos solicitados. Cuando este haya terminado presione el botón 'finalizar'</p>
+                        </div>
+
+                        <div class="seleccionModalidad clearfix ng-scope" ng-show="mostrarResumenModalidad()">
+                            <!-- ngRepeat: m in resumenModalidades --><fieldset class="bloque-formulario clearfix  ng-scope activa" ng-repeat="m in resumenModalidades" ng-class="{activa: (modalidadSeleccionada === m.modalidadId)}">
+                                <legend class="ng-binding"> <span ng-class="{'icono-users': (m.modalidadId === 'Separada'), 'icono-user': (m.modalidadId === 'Conjunta' || m.modalidadId === 'ConjuntaEspecial' )}" class="icono-user"></span> Conjunta</legend>
+                                <p class="descripcion ng-binding"></p>
+                                <ul>
+                                    <!-- ngRepeat: detalle in m.detalle -->
+                                    <li ng-repeat="detalle in m.detalle" ng-class="{total: detalle.esTotal}" class="ng-scope total">
+                                        <span class="nombre ng-binding">Total deuda tributaria</span>
+                                        <span class="valor ng-binding">0 a pagar</span>
+                                    </li>
+                                </ul>
+                                <div class="seleccionar" ng-show="modalidadSeleccionada != m.modalidadId" style="display: none;">
+                                    <button type="button" class="btn btn-inverse ng-binding" ng-click="cambiarModalidad(m.modalidadId)" id="cambiarModalidadBtn">seleccionar</button>
+                                </div>
+                                <div class="seleccionar" ng-show="modalidadSeleccionada === m.modalidadId">
+                                    <button type="button" class="btn btn-inverse ng-binding">seleccionada</button>
+                                </div>
+                            </fieldset><fieldset class="bloque-formulario clearfix  ng-scope" ng-repeat="m in resumenModalidades" ng-class="{activa: (modalidadSeleccionada === m.modalidadId)}">
+                                <legend class="ng-binding"> <span ng-class="{'icono-users': (m.modalidadId === 'Separada'), 'icono-user': (m.modalidadId === 'Conjunta' || m.modalidadId === 'ConjuntaEspecial' )}" class="icono-users"></span> Separada</legend>
+                                <p class="descripcion ng-binding"></p>
+                                <ul>
+                                    <!-- ngRepeat: detalle in m.detalle -->
+                                    <li ng-repeat="detalle in m.detalle" ng-class="{total: detalle.esTotal}" class="ng-scope">
+                                        <span class="nombre ng-binding">ignacio A.D.</span>
+                                        <span class="valor ng-binding">0 a pagar</span>
+                                    </li>
+                                    <li ng-repeat="detalle in m.detalle" ng-class="{total: detalle.esTotal}" class="ng-scope">
+                                        <span class="nombre ng-binding">pablo A.</span>
+                                        <span class="valor ng-binding">0 a pagar</span>
+                                    </li>
+                                    <li ng-repeat="detalle in m.detalle" ng-class="{total: detalle.esTotal}" class="ng-scope total">
+                                        <span class="nombre ng-binding">Suma separadas</span>
+                                        <span class="valor ng-binding">0 a pagar</span>
+                                    </li>
+                                </ul>
+                                <div class="seleccionar" ng-show="modalidadSeleccionada != m.modalidadId">
+                                    <button type="button" class="btn btn-inverse ng-binding" ng-click="cambiarModalidad(m.modalidadId)" id="cambiarModalidadBtn">seleccionar</button>
+                                </div>
+                                <div class="seleccionar" ng-show="modalidadSeleccionada === m.modalidadId" style="display: none;">
+                                    <button type="button" class="btn btn-inverse ng-binding">seleccionada</button>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div ng-show="!mostrarResumenModalidad()" class="modalidad-entrega-unica ng-scope" style="display: none;">
+                            <span ng-bind="'modalidadtributacion' | i18n" class="ng-binding">Modalidad de tributación</span>: <span ng-bind="modalidadSeleccionada | i18n" class="ng-binding">Conjunta</span>
+                        </div>
+
+                        <fieldset class="bloque-formulario clearfix asignacionTributaria ng-scope">
+                            <legend class="ng-binding">Asignación tributaria</legend>
+                            <!-- ngRepeat: secuencia in secuencias --><div ng-repeat="secuencia in secuencias" class="ng-scope">
+                                <label class="nombre fa-user ng-binding">ignacio Azpíroz Del Cuvillo</label>
+                                <div ng-class="{campo:true, clearfix:true, error: errores.1.asignacionTributaria,   warning: avisos.asignacionTributaria,   ajuste: ajustesRealizados.asignacionTributaria, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="asignacionTributaria" irpf-i18n="asignacionTributaria">Asignación tributaria</label></div><select id="asignacionTributaria" name="asignacionTributaria" ng-model="data.1.asignacionTributaria" irpf-blur="ejecutarAjustes('asignacionTributaria')" required="" ng-options="currOption.value as currOption.text for currOption in combos.asignacionTributaria" ng-change="obtenerValoresConstantes('asignacionTributaria', data.1.asignacionTributaria)" class="ng-pristine ng-invalid ng-invalid-required"><option value="?" selected="selected"></option><option value="0">Fines sociales</option><option value="1">Iglesia Católica</option><option value="2">Ninguna</option><option value="3">Iglesia Católica y Fines sociales</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.asignacionTributaria track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.asignacionTributaria track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_asignacionTributaria' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div><div ng-repeat="secuencia in secuencias" class="ng-scope">
+                                <label class="nombre fa-user ng-binding">pablo Azpíroz</label>
+                                <div ng-class="{campo:true, clearfix:true, error: errores.2.asignacionTributaria,   warning: avisos.asignacionTributaria,   ajuste: ajustesRealizados.asignacionTributaria, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="asignacionTributaria" irpf-i18n="asignacionTributaria">Asignación tributaria</label></div><select id="asignacionTributaria" name="asignacionTributaria" ng-model="data.2.asignacionTributaria" irpf-blur="ejecutarAjustes('asignacionTributaria')" required="" ng-options="currOption.value as currOption.text for currOption in combos.asignacionTributaria" ng-change="obtenerValoresConstantes('asignacionTributaria', data.2.asignacionTributaria)" class="ng-pristine ng-invalid ng-invalid-required"><option value="?" selected="selected"></option><option value="0">Fines sociales</option><option value="1">Iglesia Católica</option><option value="2">Ninguna</option><option value="3">Iglesia Católica y Fines sociales</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.asignacionTributaria track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.asignacionTributaria track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_asignacionTributaria' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div>
+                        </fieldset>
+
+                        <!-- ngRepeat: secuencia in secuencias -->
+                        <fieldset class="bloque-formulario clearfix campos-limpios ng-scope" ng-repeat="secuencia in secuencias" ng-show="mostraSecuencia(secuencia.$tipoSecuencia)">
+                            <legend class="fa-user ng-binding">ignacio Azpíroz Del Cuvillo</legend>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.1.generaDeclaracion,   warning: avisos.generaDeclaracion,   ajuste: ajustesRealizados.generaDeclaracion, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="generaDeclaracion" irpf-i18n="generaDeclaracion">Genera declaración</label></div><select id="generaDeclaracion" name="generaDeclaracion" ng-model="data.1.generaDeclaracion" irpf-blur="ejecutarAjustes('generaDeclaracion')" required="" ng-options="currOption.value as currOption.text for currOption in combos.generaDeclaracion" ng-change="obtenerValoresConstantes('generaDeclaracion', data.1.generaDeclaracion)" class="ng-pristine ng-valid ng-valid-required"><option value="0" selected="selected">Si</option><option value="1">No</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.generaDeclaracion track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.generaDeclaracion track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_generaDeclaracion' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.1.sexo,   warning: avisos.sexo,   ajuste: ajustesRealizados.sexo, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="sexo" irpf-i18n="sexo">Sexo</label></div><select id="sexo" name="sexo" ng-model="data.1.sexo" irpf-blur="ejecutarAjustes('sexo')" required="" ng-options="currOption.value as currOption.text for currOption in combos.sexo" ng-change="obtenerValoresConstantes('sexo', data.1.sexo)" class="ng-pristine ng-valid ng-valid-required"><option value="0" selected="selected">Hombre</option><option value="1">Mujer</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.sexo track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.sexo track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_sexo' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.1.nif,   warning: avisos.nif,   ajuste: ajustesRealizados.nif, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="nif" irpf-i18n="nif">N.I.F</label></div><input irpf-to-upper="" irpf-clean-empty="" id="nif" irpf-blur="ejecutarAjustes('nif')" name="nif" ui-mask="*9999999*" type="text" ng-model="data.1.nif" required="" ng-pattern="/d*/" class="ng-pristine ng-valid ng-valid-required ng-valid-pattern" placeholder="_________"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.nif track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.nif track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_nif' | i18n" class="elemento-mensaje ng-binding">El DNI ha de ser el mismo con el que ha accedido a la aplicación.</span></li></ul></div>
+                            </div>
+                            <div ng-show="secuencia.generaDeclaracion || secuencia.miembroFamilia.esDeclarante()">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.1.idioma,   warning: avisos.idioma,   ajuste: ajustesRealizados.idioma, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="idioma" irpf-i18n="idioma">Idioma</label></div><select id="idioma" name="idioma" ng-model="data.1.idioma" irpf-blur="ejecutarAjustes('idioma')" required="" ng-options="currOption.value as currOption.text for currOption in combos.idioma" ng-change="obtenerValoresConstantes('idioma', data.1.idioma)" class="ng-pristine ng-invalid ng-invalid-required"><option value="?" selected="selected"></option><option value="0">Castellano</option><option value="1">Euskera</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.idioma track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.idioma track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_idioma' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                <div class="campo clearfix">
+                                    <div class="etiqueta">
+                                        <label class="ng-binding">Domicilio</label>
+                                    </div>
+                                    <div class="valor">
+                                        <span class="ng-binding">Calle Itaroa 142</span>
+                                        <span class="ng-binding"> (31620 - Gorraiz)</span>
+                                        <!-- ngIf: secuencia.puedeEditarDomicilio() -->
+                                    </div>
+                                </div>
+                                <div ng-show="secuencia.mostrarAplazamiento()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.C099605,   warning: avisos.C099605,   ajuste: ajustesRealizados.C099605, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="C099605" irpf-i18n="C099605">Aplazamiento empresarios y profesionales (iniciado 2017, 2016)</label></div><select id="C099605" name="C099605" ng-model="data.1.C099605" irpf-blur="ejecutarAjustes('C099605')" ng-options="currOption.value as currOption.text for currOption in combos.C099605" ng-change="obtenerValoresConstantes('C099605', data.1.C099605)" class="ng-pristine ng-valid"><option value="0" selected="selected">C099605_No</option><option value="1">C099605_Si</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.C099605 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.C099605 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_C099605' | i18n" class="elemento-mensaje ng-binding">Revise la información. No se cumplen las condiciones mínimas establecidas en la DA 30ª y 36ª del TRIRPF para tener derecho a este aplazamiento especial</span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarCantidadAplazamiento()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.C099601,   warning: avisos.C099601,   ajuste: ajustesRealizados.C099601, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="C099601" irpf-i18n="C099601">Importe aplazamiento. Recuerde que el importe consignado en el apartado Aplazamiento empresarios y profesionales se pasará al cobro, mediante cargo en la cuenta indicada, una vez transcurridos doce meses desde la finalización del plazo de presentación de declaraciones</label></div><input irpf-clean-empty="" irpf-number="" min="0" max="2100000000" id="C099601" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('C099601')" name="C099601" type="text" ng-model="data.1.C099601" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.C099601 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.C099601 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_C099601' | i18n" class="elemento-mensaje ng-binding">El programa calcula el importe máximo de este aplazamiento especial. Si desea otras condiciones u otro tipo de aplazamiento debe hacer la solicitud por los procedimientos ordinarios</span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarTipoPago()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.tipoPago,   warning: avisos.tipoPago,   ajuste: ajustesRealizados.tipoPago, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="tipoPago" irpf-i18n="tipoPago">Fraccionado / No fraccionado</label></div><select id="tipoPago" name="tipoPago" ng-model="data.1.tipoPago" irpf-blur="ejecutarAjustes('tipoPago')" ng-options="currOption.value as currOption.text for currOption in combos.tipoPago" ng-change="obtenerValoresConstantes('tipoPago', data.1.tipoPago)" class="ng-pristine ng-valid"><option value="?" selected="selected"></option><option value="0">Fraccionado</option><option value="1">No fraccionado</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.tipoPago track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.tipoPago track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_tipoPago' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="!secuencia.mostrarPlazos()">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.importe,   warning: avisos.importe,   ajuste: ajustesRealizados.importe, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="importe" irpf-i18n="importe">Importe</label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="importe" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('importe')" name="importe" type="text" ng-model="data.1.importe" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.importe track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.importe track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_importe' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarPlazos()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.plazo1,   warning: avisos.plazo1,   ajuste: ajustesRealizados.plazo1, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="plazo1" irpf-i18n="plazo1">Plazo 1º de </label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="plazo1" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('plazo1')" name="plazo1" type="text" ng-model="data.1.plazo1" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.plazo1 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.plazo1 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_plazo1' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.plazo2,   warning: avisos.plazo2,   ajuste: ajustesRealizados.plazo2, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="plazo2" irpf-i18n="plazo2">Plazo 2º de </label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="plazo2" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('plazo2')" name="plazo2" type="text" ng-model="data.1.plazo2" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.plazo2 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.plazo2 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_plazo2' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarMetodoPago()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.modoPago,   warning: avisos.modoPago,   ajuste: ajustesRealizados.modoPago, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="modoPago" irpf-i18n="modoPago">Mediante</label></div><select id="modoPago" name="modoPago" ng-model="data.1.modoPago" irpf-blur="ejecutarAjustes('modoPago')" ng-options="currOption.value as currOption.text for currOption in combos.modoPago" ng-change="obtenerValoresConstantes('modoPago', data.1.modoPago)" class="ng-pristine ng-valid"><option value="?" selected="selected"></option><option value="0">Carta de pago</option><option value="1">Cargo</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.modoPago track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.modoPago track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_modoPago' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarCuentaBancaria()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.prefijoIBAN,   warning: avisos.prefijoIBAN,   ajuste: ajustesRealizados.prefijoIBAN, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="prefijoIBAN" irpf-i18n="prefijoIBAN">Prefijo IBAN</label></div><input irpf-clean-empty="" id="prefijoIBAN" name="prefijoIBAN" type="text" irpf-blur="ejecutarAjustes('prefijoIBAN')" ng-model="data.1.prefijoIBAN" maxlength="4" class="ng-pristine ng-valid"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.prefijoIBAN track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.prefijoIBAN track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_prefijoIBAN' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.entidad,   warning: avisos.entidad,   ajuste: ajustesRealizados.entidad, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="entidad" irpf-i18n="entidad">Entidad</label></div><input irpf-clean-empty="" id="entidad" ui-mask="9999" irpf-blur="ejecutarAjustes('entidad')" name="entidad" type="text" ng-model="data.1.entidad" ng-pattern="/^[0-9]{4}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="____"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.entidad track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.entidad track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_entidad' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.sucursal,   warning: avisos.sucursal,   ajuste: ajustesRealizados.sucursal, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="sucursal" irpf-i18n="sucursal">Sucursal</label></div><input irpf-clean-empty="" id="sucursal" ui-mask="9999" irpf-blur="ejecutarAjustes('sucursal')" name="sucursal" type="text" ng-model="data.1.sucursal" ng-pattern="/^[0-9]{4}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="____"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.sucursal track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.sucursal track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_sucursal' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.dc,   warning: avisos.dc,   ajuste: ajustesRealizados.dc, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="dc" irpf-i18n="dc">DC</label></div><input irpf-clean-empty="" id="dc" ui-mask="99" irpf-blur="ejecutarAjustes('dc')" name="dc" type="text" ng-model="data.1.dc" ng-pattern="/^[0-9]{2}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="__"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.dc track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.dc track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_dc' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.1.ncuenta,   warning: avisos.ncuenta,   ajuste: ajustesRealizados.ncuenta, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="ncuenta" irpf-i18n="ncuenta">Número de cuenta</label></div><input irpf-clean-empty="" id="ncuenta" ui-mask="9999999999" irpf-blur="ejecutarAjustes('ncuenta')" name="ncuenta" type="text" ng-model="data.1.ncuenta" ng-pattern="/^[0-9]{10}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="__________"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.1.ncuenta track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.ncuenta track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_ncuenta' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="bloque-formulario clearfix campos-limpios ng-scope" ng-repeat="secuencia in secuencias" ng-show="mostraSecuencia(secuencia.$tipoSecuencia)" style="display: none;">
+                            <legend class="icono-user ng-binding">pablo Azpíroz</legend>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.2.generaDeclaracion,   warning: avisos.generaDeclaracion,   ajuste: ajustesRealizados.generaDeclaracion, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="generaDeclaracion" irpf-i18n="generaDeclaracion">Genera declaración</label></div><select id="generaDeclaracion" name="generaDeclaracion" ng-model="data.2.generaDeclaracion" irpf-blur="ejecutarAjustes('generaDeclaracion')" required="" ng-options="currOption.value as currOption.text for currOption in combos.generaDeclaracion" ng-change="obtenerValoresConstantes('generaDeclaracion', data.2.generaDeclaracion)" class="ng-pristine ng-valid ng-valid-required"><option value="0">Si</option><option value="1" selected="selected">No</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.generaDeclaracion track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.generaDeclaracion track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_generaDeclaracion' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.2.sexo,   warning: avisos.sexo,   ajuste: ajustesRealizados.sexo, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="sexo" irpf-i18n="sexo">Sexo</label></div><select id="sexo" name="sexo" ng-model="data.2.sexo" irpf-blur="ejecutarAjustes('sexo')" required="" ng-options="currOption.value as currOption.text for currOption in combos.sexo" ng-change="obtenerValoresConstantes('sexo', data.2.sexo)" class="ng-pristine ng-invalid ng-invalid-required"><option value="?" selected="selected"></option><option value="0">Hombre</option><option value="1">Mujer</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.sexo track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.sexo track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_sexo' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                            </div>
+                            <div ng-show="mostrarGeneraDeclaracion()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.2.nif,   warning: avisos.nif,   ajuste: ajustesRealizados.nif, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="nif" irpf-i18n="nif">N.I.F</label></div><input irpf-to-upper="" irpf-clean-empty="" id="nif" irpf-blur="ejecutarAjustes('nif')" name="nif" ui-mask="*9999999*" type="text" ng-model="data.2.nif" required="" ng-pattern="/d*/" class="ng-pristine ng-invalid ng-invalid-required ng-valid-pattern" placeholder="_________"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.nif track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.nif track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_nif' | i18n" class="elemento-mensaje ng-binding">El DNI ha de ser el mismo con el que ha accedido a la aplicación.</span></li></ul></div>
+                            </div>
+                            <div ng-show="secuencia.generaDeclaracion || secuencia.miembroFamilia.esDeclarante()" style="display: none;">
+                                <div ng-class="{campo:true, clearfix:true, error: errores.2.idioma,   warning: avisos.idioma,   ajuste: ajustesRealizados.idioma, requerido: true}" class="ng-scope campo clearfix requerido"><div class="etiqueta"><label for="idioma" irpf-i18n="idioma">Idioma</label></div><select id="idioma" name="idioma" ng-model="data.2.idioma" irpf-blur="ejecutarAjustes('idioma')" required="" ng-options="currOption.value as currOption.text for currOption in combos.idioma" ng-change="obtenerValoresConstantes('idioma', data.2.idioma)" class="ng-pristine ng-invalid ng-invalid-required"><option value="?" selected="selected"></option><option value="0">Castellano</option><option value="1">Euskera</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.idioma track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.idioma track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_idioma' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                <div class="campo clearfix">
+                                    <div class="etiqueta">
+                                        <label class="ng-binding">Domicilio</label>
+                                    </div>
+                                    <div class="valor">
+                                        <span class="ng-binding">Calle Itaroa 142</span>
+                                        <span class="ng-binding"> (31620 - Gorraiz)</span>
+                                        <!-- ngIf: secuencia.puedeEditarDomicilio() --><a ng-if="secuencia.puedeEditarDomicilio()" ng-click="editarDomicilio(secuencia)" class="ng-scope ng-binding">modificar</a>
+                                    </div>
+                                </div>
+                                <div ng-show="secuencia.mostrarAplazamiento()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.C099605,   warning: avisos.C099605,   ajuste: ajustesRealizados.C099605, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="C099605" irpf-i18n="C099605">Aplazamiento empresarios y profesionales (iniciado 2017, 2016)</label></div><select id="C099605" name="C099605" ng-model="data.2.C099605" irpf-blur="ejecutarAjustes('C099605')" ng-options="currOption.value as currOption.text for currOption in combos.C099605" ng-change="obtenerValoresConstantes('C099605', data.2.C099605)" class="ng-pristine ng-valid"><option value="0" selected="selected">C099605_No</option><option value="1">C099605_Si</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.C099605 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.C099605 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_C099605' | i18n" class="elemento-mensaje ng-binding">Revise la información. No se cumplen las condiciones mínimas establecidas en la DA 30ª y 36ª del TRIRPF para tener derecho a este aplazamiento especial</span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarCantidadAplazamiento()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.C099601,   warning: avisos.C099601,   ajuste: ajustesRealizados.C099601, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="C099601" irpf-i18n="C099601">Importe aplazamiento. Recuerde que el importe consignado en el apartado Aplazamiento empresarios y profesionales se pasará al cobro, mediante cargo en la cuenta indicada, una vez transcurridos doce meses desde la finalización del plazo de presentación de declaraciones</label></div><input irpf-clean-empty="" irpf-number="" min="0" max="2100000000" id="C099601" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('C099601')" name="C099601" type="text" ng-model="data.2.C099601" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.C099601 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.C099601 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_C099601' | i18n" class="elemento-mensaje ng-binding">El programa calcula el importe máximo de este aplazamiento especial. Si desea otras condiciones u otro tipo de aplazamiento debe hacer la solicitud por los procedimientos ordinarios</span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarTipoPago()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.tipoPago,   warning: avisos.tipoPago,   ajuste: ajustesRealizados.tipoPago, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="tipoPago" irpf-i18n="tipoPago">Fraccionado / No fraccionado</label></div><select id="tipoPago" name="tipoPago" ng-model="data.2.tipoPago" irpf-blur="ejecutarAjustes('tipoPago')" ng-options="currOption.value as currOption.text for currOption in combos.tipoPago" ng-change="obtenerValoresConstantes('tipoPago', data.2.tipoPago)" class="ng-pristine ng-valid"><option value="?" selected="selected"></option><option value="0">Fraccionado</option><option value="1">No fraccionado</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.tipoPago track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.tipoPago track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_tipoPago' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="!secuencia.mostrarPlazos()">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.importe,   warning: avisos.importe,   ajuste: ajustesRealizados.importe, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="importe" irpf-i18n="importe">Importe</label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="importe" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('importe')" name="importe" type="text" ng-model="data.2.importe" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.importe track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.importe track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_importe' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarPlazos()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.plazo1,   warning: avisos.plazo1,   ajuste: ajustesRealizados.plazo1, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="plazo1" irpf-i18n="plazo1">Plazo 1º de </label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="plazo1" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('plazo1')" name="plazo1" type="text" ng-model="data.2.plazo1" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.plazo1 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.plazo1 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_plazo1' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.plazo2,   warning: avisos.plazo2,   ajuste: ajustesRealizados.plazo2, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="plazo2" irpf-i18n="plazo2">Plazo 2º de </label></div><input irpf-clean-empty="" irpf-number="" max="2100000000" id="plazo2" readonly="" class="inputNumber ng-pristine ng-valid" irpf-blur="ejecutarAjustes('plazo2')" name="plazo2" type="text" ng-model="data.2.plazo2" maxlength="10"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.plazo2 track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.plazo2 track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_plazo2' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarMetodoPago()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.modoPago,   warning: avisos.modoPago,   ajuste: ajustesRealizados.modoPago, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="modoPago" irpf-i18n="modoPago">Mediante</label></div><select id="modoPago" name="modoPago" ng-model="data.2.modoPago" irpf-blur="ejecutarAjustes('modoPago')" ng-options="currOption.value as currOption.text for currOption in combos.modoPago" ng-change="obtenerValoresConstantes('modoPago', data.2.modoPago)" class="ng-pristine ng-valid"><option value="?" selected="selected"></option><option value="0">Carta de pago</option><option value="1">Cargo</option></select><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.modoPago track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.modoPago track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_modoPago' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                                <div ng-show="secuencia.mostrarCuentaBancaria()" style="display: none;">
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.prefijoIBAN,   warning: avisos.prefijoIBAN,   ajuste: ajustesRealizados.prefijoIBAN, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="prefijoIBAN" irpf-i18n="prefijoIBAN">Prefijo IBAN</label></div><input irpf-clean-empty="" id="prefijoIBAN" name="prefijoIBAN" type="text" irpf-blur="ejecutarAjustes('prefijoIBAN')" ng-model="data.2.prefijoIBAN" maxlength="4" class="ng-pristine ng-valid"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.prefijoIBAN track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.prefijoIBAN track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_prefijoIBAN' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.entidad,   warning: avisos.entidad,   ajuste: ajustesRealizados.entidad, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="entidad" irpf-i18n="entidad">Entidad</label></div><input irpf-clean-empty="" id="entidad" ui-mask="9999" irpf-blur="ejecutarAjustes('entidad')" name="entidad" type="text" ng-model="data.2.entidad" ng-pattern="/^[0-9]{4}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="____"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.entidad track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.entidad track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_entidad' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.sucursal,   warning: avisos.sucursal,   ajuste: ajustesRealizados.sucursal, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="sucursal" irpf-i18n="sucursal">Sucursal</label></div><input irpf-clean-empty="" id="sucursal" ui-mask="9999" irpf-blur="ejecutarAjustes('sucursal')" name="sucursal" type="text" ng-model="data.2.sucursal" ng-pattern="/^[0-9]{4}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="____"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.sucursal track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.sucursal track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_sucursal' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.dc,   warning: avisos.dc,   ajuste: ajustesRealizados.dc, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="dc" irpf-i18n="dc">DC</label></div><input irpf-clean-empty="" id="dc" ui-mask="99" irpf-blur="ejecutarAjustes('dc')" name="dc" type="text" ng-model="data.2.dc" ng-pattern="/^[0-9]{2}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="__"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.dc track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.dc track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_dc' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                    <div ng-class="{campo:true, clearfix:true, error: errores.2.ncuenta,   warning: avisos.ncuenta,   ajuste: ajustesRealizados.ncuenta, requerido: false}" class="ng-scope campo clearfix"><div class="etiqueta"><label for="ncuenta" irpf-i18n="ncuenta">Número de cuenta</label></div><input irpf-clean-empty="" id="ncuenta" ui-mask="9999999999" irpf-blur="ejecutarAjustes('ncuenta')" name="ncuenta" type="text" ng-model="data.2.ncuenta" ng-pattern="/^[0-9]{10}$/" class="ng-pristine ng-valid ng-valid-pattern" placeholder="__________"><ul class="errores"><!-- ngRepeat: (nombreError, error) in errores.2.ncuenta track by $index --></ul><ul class="warnings"><!-- ngRepeat: (nombreAviso, aviso) in avisos.ncuenta track by $index --></ul><ul class="ajustes"><li class="mensaje-ajuste"><span ng-bind="'ajuste_ncuenta' | i18n" class="elemento-mensaje ng-binding"></span></li></ul></div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- ngIf: !datosEntrega -->
+                        <div class="botonera ng-scope" ng-if="!datosEntrega">
+                            <div class="izquierda"><button type="button" class="boton back ng-binding" ng-click="volver()" id="volverBtn"><span class="icono-left-open"></span> Resultado de la declaración</button></div>
+                            <div class="derecha">
+                                <button type="button" class="boton next predeterminado ng-binding" ng-click="iniciarEntrega()" id="iniciarEntregaBtn"> Guardar y siguiente <span class="icono-right-open"></span> </button>
+                            </div>
+                        </div>
+                    </ng-view>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ayudaOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda">ayuda</h3><button type="button" class="cerrarAyuda imagen" ng-click="cerrarAyuda()" id="cerrarAyudaBtn">volver</button><div class="scrollVentana"></div>  </div>  </div>
+    <div id="datosFiscalesOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda"></h3><button type="button" class="cerrarAyuda imagen ng-binding" ng-click="cerrarDatosFiscales()">btnvolver</button><div class="scrollVentana scrollDF"><!-- ngIf: secuenciasDatosFiscales && secuenciasDatosFiscales.length > 1 --><!-- ngIf: ayudaDatosFiscales --></div>  </div>  </div>
+    <div id="espere" class="ng-scope"> <span id="iconoEspere"></span></div>
+    <footer id="footer" class="pie-pagina">
+        <div class="centrado">
+            <!--<a href="http://www.navarra.es" class="gobierno-navarra imagen">{{'footGobiernoNavarra' | i18n}}</a>-->
+            <img id="ctl00_imgGobiernoPie" src="img/gobierno-navarra.png" alt="Gobierno de Navarra" style="height:39px;width:170px;border-width:0px;float:left;">
+            <ul>
+                <li><a href="http://www.navarra.es/home_es/Indices/Mapa+web/" class="ng-binding">Mapa web</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/avisoLegal.htm" class="ng-binding"> Aviso legal y privacidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/accesibilidad.htm" class="ng-binding">Accesibilidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Indices/Sugerencias/" class="ng-binding"> Contacte con nosotros</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!--browser support -->
+    <script type="text/javascript" src="lib/browser/browser.js"></script>
+    <script>
+        (function () {
+            var br = new Browser();
+            var supportedBrowsers = {
+                'chrome': 20,
+                'safari': 4,
+                'firefox': 16,
+                'iexplorer': 10
+            };
+            if (supportedBrowsers[br.name] == null || supportedBrowsers[br.name] >= br.version)  window.location = "NavegadorNoSoportado.html";
+        })();
+    </script>
+    <script type="text/javascript" src="lib/libsBuild.js"></script>
+    <!--Es campaña o simulador-->
+
+    <script type="text/javascript" src="js/2017/appBuild-219a2d95cc.js"></script>
+
+
+</body>
+</html>

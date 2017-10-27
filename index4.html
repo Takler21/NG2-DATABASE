@@ -1,0 +1,499 @@
+﻿<!DOCTYPE html>
+
+<html ng-app="irpf" class="ng-scope">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <title>Renta Navarra</title>
+    <link rel="stylesheet" type="text/css" href="content/reset.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="content/bootstrap/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="content/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="content/styles.min.css">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none;
+        }
+
+        ng\:form {
+            display: block;
+        }
+    </style>
+    <script src="app.js"></script>
+</head>
+<body ng-controller="globalscopeController" class="ng-scope">
+    <div id="wrap" ng-keypress="cambiarModoLiterales($event)">
+        <div id="main" class="clearfix">
+            <div class="centrado">
+                <div class="cabecera clearfix">
+                    <map title="navegación primer nivel del portal" id="menuEspecial">
+                        <ul>
+                            <li class="logo"><h1><a href=" http//www.navarra.es/home_es/"><span>navarra.es</span></a></h1></li>
+
+                            <li class="primero"><a href="http://www.navarra.es/home_es/" class="ng-binding">Navarra</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Servicios/" class="ng-binding"> Servicios</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Temas/" class="ng-binding"> Temas</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Gobierno+de+Navarra/" class="ng-binding"> Gobierno</a></li>
+
+                            <li><a href="http://www.navarra.es/home_es/Actualidad/" class="ng-binding"> Actualidad</a></li>
+
+                        </ul>
+                    </map>
+                    <div class="cabeceraIrpf">
+                        <h2 style="color: #9a0000; float:left" class="ng-binding">Renta Navarra</h2>
+                        <a class="cerrar-Sesion icono-plus ng-binding" id="iniciarDeclaracionBtn" ng-click="iniciarNuevaDeclaracion()" ng-show="declaracionCargada()" style="">Iniciar nueva declaración</a>
+                        <a class="cerrar-Sesion icono-print ng-binding" id="imprimirBorradorBtn" ng-click="imprimirBorradorDeclaracion()" ng-show="declaracionCargada()" style="">Imprimir borrador</a>
+                        <a class="cerrar-Sesion icono-lock ng-binding" id="cerrarSesionBtn" ng-click="cerrarSesion()" ng-show="sesionIniciada()"> Cerrar sesión</a>
+                    </div>
+                    <div class="separador-primer-nivel "></div>
+
+                </div>
+            </div>
+
+            <div id="estadoDeclaracion" ng-show="declaracionCargada()" class="centrado" style="">
+                <span style="color:#999999" title="Cada vez que usted modifique su declaración la aplicación guardará un borrador con los últimos cambios realizados." class="ng-binding">Borrador guardado.</span>
+            </div>
+
+            <div class="pasos" ng-show="mostrarAsistenteDeclaracion" style="">
+                <div class="centrado">
+                    <nav>
+
+                        <!-- ngRepeat: o in pasosAsistente --><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">1</span>
+                            <span class="texto ng-binding">Datos personales y familiares</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope activo">
+                            <span class="numero ng-binding">2</span>
+                            <span class="texto ng-binding">Datos económicos</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">3</span>
+                            <span class="texto ng-binding">Resultado de la declaración</span>
+                        </a><a ng-repeat="o in pasosAsistente" ng-click="irA(o)" ng-class="{'activo':o.esPasoActual}" class="ng-scope">
+                            <span class="numero ng-binding">4</span>
+                            <span class="texto ng-binding">Entrega</span>
+                        </a>
+
+                    </nav>
+                </div>
+            </div>
+            <div class="contenido">
+                <div class="centrado">
+                    <ng-view>
+                        <h3 class="ng-scope ng-binding">  Mi perfil</h3>
+                        <div class="info mensaje ng-scope">
+                            <p class="ng-binding"> Por favor, rellene este formulario para ayudarnos a detectar qué apartados incorporar a su declaración.</p>
+                        </div>
+
+
+                        <div class="clearfix seccionConEstados autoperfil ng-scope">
+                            <!-- ngRepeat: apartado in preguntas --><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links un-tercio  clearfix ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-user-outline">Soy ...</span> </legend>
+                                    <!-- ngIf: !tieneDatos( nombreSeccion ) --><p class="descripcion ng-scope ng-binding" ng-if="!tieneDatos( nombreSeccion )">
+                                        Si nos indica QUE ES le podremos ayudar a incorporar a su declaración aquellos datos que seguramente deba incluir en su declaración.
+                                    </p>
+                                    <!-- ngIf: tieneDatos(nombreSeccion) -->
+                                    <div class="seleccionar">
+                                        <button type="button" class="btn btn-inverse icono-check ng-binding" ng-click="cambiarSeccion(nombreSeccion)" id="cambiarSeccionBtn"> Seleccionar</button>
+                                    </div>
+                                </fieldset>
+                            </div><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links un-tercio  clearfix ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-calendar">Este año quiero añadir...</span> </legend>
+                                    <!-- ngIf: !tieneDatos( nombreSeccion ) --><p class="descripcion ng-scope ng-binding" ng-if="!tieneDatos( nombreSeccion )">
+                                        Si nos señala ciertas actividades económicas que haya realizado este año podemos guiarle en la confección de la declaración.
+                                    </p>
+                                    <!-- ngIf: tieneDatos(nombreSeccion) -->
+                                    <div class="seleccionar">
+                                        <button type="button" class="btn btn-inverse icono-check ng-binding" ng-click="cambiarSeccion(nombreSeccion)" id="cambiarSeccionBtn"> Seleccionar</button>
+                                    </div>
+                                </fieldset>
+                            </div><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links un-tercio  clearfix ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-level-down">Deducir ...</span> </legend>
+                                    <!-- ngIf: !tieneDatos( nombreSeccion ) --><p class="descripcion ng-scope ng-binding" ng-if="!tieneDatos( nombreSeccion )">
+                                        Si sabe que puede deducirse por algún hecho económico que le afecta, podríamos guiarle en la confección de la declaración para esos hechos económicos.
+                                    </p>
+                                    <!-- ngIf: tieneDatos(nombreSeccion) -->
+                                    <div class="seleccionar">
+                                        <button type="button" class="btn btn-inverse icono-check ng-binding" ng-click="cambiarSeccion(nombreSeccion)" id="cambiarSeccionBtn"> Seleccionar</button>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="preguntas ng-scope">
+                            <!-- ngRepeat: apartado in preguntas --><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links  clearfix listadoAutoperfil ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado" id="cat_soy">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-user-outline">Soy ...</span></legend>
+                                    <ul>
+                                        <!-- ngRepeat: (pregunta, apartado) in apartado[nombreSeccion] track by $index -->
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_000" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_000" class="ng-binding">Pertenezco a un sindicato o partido político.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_005" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_005" class="ng-binding">Empleado que recibe sueldo, jornal, salario...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_006" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_006" class="ng-binding">Pensionista...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_014" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_014" class="ng-binding">Pertenezco a colegio profesional.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_036" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_036" class="ng-binding">Profesional liberal, artista, deportista...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_037" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_037" class="ng-binding">Empresario en actividades extractivas, de fabricación, de comercio, de prestación de servicios, de artesanía, de construcción, minería...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_038" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_038" class="ng-binding">Agricultor, ganadero, forestal o pescador.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_044" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_044" class="ng-binding">Deportista y he realizado aportaciones a la mutualidad de deportistas profesionales.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_078" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_078" class="ng-binding">Socio de instituciones de inversión colectiva.</label>
+                                        </li>
+                                        <li ng-show="!todasVisibles(nombreSeccion) &amp;&amp; seccionConPreguntasColapsadas(apartado, nombreSeccion)" style="display: none;"> <button class="btn icono-plus ng-binding" ng-click="verTodas(nombreSeccion)"> Mostrar más...</button></li>
+                                    </ul>
+                                </fieldset>
+                            </div><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links  clearfix listadoAutoperfil ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado" id="cat_ejercicio">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-calendar">Este año quiero añadir...</span></legend>
+                                    <ul>
+                                        <!-- ngRepeat: (pregunta, apartado) in apartado[nombreSeccion] track by $index -->
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_0" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_0" class="ng-binding">He obtenido rendimientos negativos de capital.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_00" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_00" class="ng-binding">Mi patrimonio ha variado por venta de vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_001" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_001" class="ng-binding">He dispuesto de aportaciones por mi discapacidad.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_002" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_002" class="ng-binding">He recibido contribuciones a sistemas de previsión social.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_003" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_003" class="ng-binding">He recibido aportaciones por mi discapacidad.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_007" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_007" class="ng-binding">He disfrutado de ciertas ventajas por ser empleado: vivienda, vehículo...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_012" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_012" class="ng-binding">He cotizado a la Seguridad Social como trabajador por cuenta ajena.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_015" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_015" class="ng-binding">He subarrendado inmuebles.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_016" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_016" class="ng-binding">He cedido derechos de imagen.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_017" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_017" class="ng-binding">He obtenido intereses de ceder capital a entidades de las que participo.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_018" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_018" class="ng-binding">He obtenido rendimientos de propiedad intelectual, de asistencia técnica, propiedad industrial...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_019" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_019" class="ng-binding">He tenido gastos por asistencia técnica, arrendamiento de capital, negocios o minas o de subarrendamientos.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_020" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_020" class="ng-binding">Pienso que tengo derecho a reducciones en capital mobiliario.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_021" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_021" class="ng-binding">He obtenido dividendos o rendimientos asociados a acciones...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_022" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_022" class="ng-binding">He obtenido intereses de cuentas bancarias u otras cesiones de capital.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_024" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_024" class="ng-binding">He obtenido intereses de obligaciones bonificadas.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_025" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_025" class="ng-binding">He obtenido rendimientos de contratos de seguros o planes de ahorro sistemático.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_026" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_026" class="ng-binding">He obtenido rendimientos de letras del tesoro...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_027" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_027" class="ng-binding">He obtenido intereses en otros estados de la CE</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_029" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_029" class="ng-binding">He obtenido rendimientos por derechos sobre bienes muebles.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_031" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_031" class="ng-binding">He tenido gastos de administración y depósito de capital mobiliario.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_032" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_032" class="ng-binding">He tenido arrendado una vivienda de mi propiedad.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_033" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_033" class="ng-binding">He tenido arrendado un local (o similar) de mi propiedad.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_035" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_035" class="ng-binding">He tenido rendimientos de uso y disfrute (tambien a familiares).</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_041" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_041" class="ng-binding">He cotizado a la Seguridad Social por cuidadores.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_042" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_042" class="ng-binding">He realizado aportaciones a sistemas de  previsión social y/o patrimonios protegidos</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_043" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_043" class="ng-binding">He satisfecho  cuotas de filiación y/o aportaciones a partidos políticos.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_047" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_047" class="ng-binding">He satisfecho anualidades por alimentos de hijos.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_048" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_048" class="ng-binding">He satisfecho pensiones compensatorias.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_049" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_049" class="ng-binding">He realizado aportaciones a sistemas de  previsión social (mutualidades, planes de pensiones y asegurado, seguros dependencia) </label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_076" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_076" class="ng-binding">He obtenido rentas por una entidad no residente en territorio español o de la Unión Europea.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_077" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_077" class="ng-binding">He obtenido rentas por cesión de derechos de imagen.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_079" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_079" class="ng-binding">Mi patrimonio ha variado por venta de bienes usados en actividades empresariales o profesionales.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_080" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_080" class="ng-binding">Mi patrimonio ha variado por venta de otros inmuebles; terrenos rusticos,  urbanos o urbanizables; acciones, activos inmateriales.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_082" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_082" class="ng-binding">He recibido subvenciones de vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_083" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_083" class="ng-binding">Mi patrimonio ha variado por venta de fondos de inversión.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_085" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_085" class="ng-binding">Mi patrimonio ha variado por premios, indemnizaciones, condonaciones de deuda, ganancias de juego...</label>
+                                        </li>
+                                        <li ng-show="!todasVisibles(nombreSeccion) &amp;&amp; seccionConPreguntasColapsadas(apartado, nombreSeccion)"> <button class="btn icono-plus ng-binding" ng-click="verTodas(nombreSeccion)"> Mostrar más...</button></li>
+                                    </ul>
+                                </fieldset>
+                            </div><div ng-repeat="apartado in preguntas" class="ng-scope">
+                                <!-- ngRepeat: (nombreSeccion, seccion) in apartado --><fieldset class="bloque-formulario listado-links  clearfix listadoAutoperfil ng-scope" ng-repeat="(nombreSeccion, seccion) in apartado" id="cat_deducir">
+                                    <legend> <span ng-class="{'icono-user-outline': nombreSeccion==='cat_soy', 'icono-calendar': nombreSeccion==='cat_ejercicio', 'icono-level-down': nombreSeccion==='cat_deducir'}" class="ng-binding icono-level-down">Deducir ...</span></legend>
+                                    <ul>
+                                        <!-- ngRepeat: (pregunta, apartado) in apartado[nombreSeccion] track by $index -->
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_008" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_008" class="ng-binding">Reducción por obtención de ingresos de trabajo no periodico o irregulares.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_009" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_009" class="ng-binding">Reducción por prestaciones de Seguridad Social o planes de pensiones...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_010" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_010" class="ng-binding">Reducción por prestaciones por discapacidad...</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_011" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_011" class="ng-binding">Reducción por prestaciones por seguro fallecimiento o invalidez.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_051" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_051" class="ng-binding">Anticipos del depto. De politica social por pensiones de viudedad</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_052" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_052" class="ng-binding">Por arrendamiento de vivienda.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_054" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_054" class="ng-binding">Por creacion de empleo de empresarios y profesionales.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_056" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_056" class="ng-binding">Rentas obtenidas en Ceuta y Melilla y otras deducciones.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_057" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_057" class="ng-binding">Por donaciones</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)">
+                                            <input type="checkbox" id="pap_058" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_058" class="ng-binding">Por doble imposición internacional.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_059" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_059" class="ng-binding">Por inversión de empresarios y prof. Fomento de empresas.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_060" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_060" class="ng-binding">Cuotas por el IAE e IVPEE y otros pagos a cuenta</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_061" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_061" class="ng-binding">Aumento por perdida beneficios inversión.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_062" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_062" class="ng-binding">Pagos fraccionados.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_063" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_063" class="ng-binding">Por pensiones de viudedad.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_065" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_065" class="ng-binding">Compensación fiscal seguros de vida e invalidez.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_066" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_066" class="ng-binding">He aportado a la cuenta vivienda para la adquisición de mi primera vivienda.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_067" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_067" class="ng-binding">He aportado a la cuenta vivienda para la rehabilitación de mi vivienda.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_068" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_068" class="ng-binding">Tengo un contrato de arrendamiento con opción de compra.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_069" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_069" class="ng-binding">He invertido en vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_070" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_070" class="ng-binding">He invertido en la rehabilitación o ampliación de mi vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_073" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_073" class="ng-binding">Tengo uno o dos prestamo para la compra de mi vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_075" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_075" class="ng-binding">Tengo un prestamo para la rehabilitacion o ampliación de mi vivienda habitual.</label>
+                                        </li>
+                                        <li class="clearfix ng-scope" ng-repeat="(pregunta, apartado) in apartado[nombreSeccion] track by $index" ng-show="$index<10 || todasVisibles(nombreSeccion)" style="display: none;">
+                                            <input type="checkbox" id="pap_086" ng-change="onCambioSeleccion($parent.$parent.$index, nombreSeccion, pregunta)" ng-model="checkeado[pregunta]" class="ng-pristine ng-valid">
+                                            <label for="pap_086" class="ng-binding">Por inversión instalaciones térmicas de biomasa</label>
+                                        </li>
+                                        <li ng-show="!todasVisibles(nombreSeccion) &amp;&amp; seccionConPreguntasColapsadas(apartado, nombreSeccion)"> <button class="btn icono-plus ng-binding" ng-click="verTodas(nombreSeccion)"> Mostrar más...</button></li>
+                                    </ul>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="botonera ng-scope">
+                            <div class="izquierda">
+                                <button type="button" class="boton accion ng-binding" ng-click="salir()" id="cancelarBtn"> Cancelar </button>
+                            </div>
+
+                            <div class="derecha">
+                                <span class="boton-desplegable">
+                                    <button type="button" class="boton predeterminado dropdown-toggle ng-binding" data-toggle="dropdown" href="#" id="agregarBtn">
+                                        Incorporar seleccionados
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <!-- ngRepeat: secuencia in secuencias -->
+                                        <li ng-repeat="secuencia in secuencias" class="ng-scope">
+                                            <a ng-click="agregarApartados(secuencia)" class="ng-binding">ignacio Azpíroz Del Cuvillo</a>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </div>
+
+                        </div>
+                    </ng-view>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ayudaOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda">ayuda</h3><button type="button" class="cerrarAyuda imagen" ng-click="cerrarAyuda()" id="cerrarAyudaBtn">volver</button><div class="scrollVentana"></div>  </div>  </div>
+    <div id="datosFiscalesOverlay" class="ng-scope"><div class="ventana"><h3 class="tituloAyuda"></h3><button type="button" class="cerrarAyuda imagen ng-binding" ng-click="cerrarDatosFiscales()">btnvolver</button><div class="scrollVentana scrollDF"><!-- ngIf: secuenciasDatosFiscales && secuenciasDatosFiscales.length > 1 --><!-- ngIf: ayudaDatosFiscales --></div>  </div>  </div>
+    <div id="espere" class="ng-scope"> <span id="iconoEspere"></span></div>
+    <footer id="footer" class="pie-pagina">
+        <div class="centrado">
+            <!--<a href="http://www.navarra.es" class="gobierno-navarra imagen">{{'footGobiernoNavarra' | i18n}}</a>-->
+            <img id="ctl00_imgGobiernoPie" src="img/gobierno-navarra.png" alt="Gobierno de Navarra" style="height:39px;width:170px;border-width:0px;float:left;">
+            <ul>
+                <li><a href="http://www.navarra.es/home_es/Indices/Mapa+web/" class="ng-binding">Mapa web</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/avisoLegal.htm" class="ng-binding"> Aviso legal y privacidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Aviso/accesibilidad.htm" class="ng-binding">Accesibilidad</a></li>
+                <li><a href="http://www.navarra.es/home_es/Indices/Sugerencias/" class="ng-binding"> Contacte con nosotros</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!--browser support -->
+    <script type="text/javascript" src="lib/browser/browser.js"></script>
+    <script>
+        (function () {
+            var br = new Browser();
+            var supportedBrowsers = {
+                'chrome': 20,
+                'safari': 4,
+                'firefox': 16,
+                'iexplorer': 10
+            };
+            if (supportedBrowsers[br.name] == null || supportedBrowsers[br.name] >= br.version)  window.location = "NavegadorNoSoportado.html";
+        })();
+    </script>
+    <script type="text/javascript" src="lib/libsBuild.js"></script>
+    <!--Es campaña o simulador-->
+
+    <script type="text/javascript" src="js/2017/appBuild-219a2d95cc.js"></script>
+
+
+</body>
+</html>
