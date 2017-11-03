@@ -1,5 +1,5 @@
 ﻿@import "mixin";
-///Componentes pequeños especificar fuera y luego usar @extend
+
 * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -25,22 +25,18 @@ h3 {
     padding: 0.833em 0;
 }
 
-//aqui porcentaje y min-width
+///%, pos
 .centrado {
     width: 72.5em;
     margin: 0 auto;
     position: relative;
 }
 
-///Intentar omitir el important
+///important
 input, select, label {
     font-size: 1em !important;
 }
 
-.campo label {
-    margin-right: 0.833em;
-    line-height: 2.5em;
-}
 
 select {
     width: 25%;
@@ -55,6 +51,11 @@ select {
     padding-right: 1.667em;
     padding-left: 1.667em;
     padding-top: 0.833em;
+
+    label {
+        margin-right: 0.833em;
+        line-height: 2.5em;
+    }
 
     &:first-of-type {
         margin-top: -0.667em;
@@ -77,8 +78,7 @@ select {
 
     &.error {
         @include linear-gradient(to right, rgba(226, 18, 18, 0) 0%, rgba(223, 19, 22, 0) 20%, rgba(214, 23, 36, 0.26) 91%, rgba(214, 23, 36, 0.28) 96%);
-        ///Haber si podemos evitar repetir esto en los siguientes casos.
-        ///Tal vez si para lo comun agrupamos en los li descendientes de campo
+        
         .errores {
             float: right;
             background-color: #c20000;
@@ -129,6 +129,10 @@ select {
     input[type="checkbox"] {
         box-shadow: none;
         width: 20px;
+    }
+
+    .inputNumber {
+        text-align: right;
     }
 }
 
@@ -205,8 +209,6 @@ select {
     height: 1.25em;
     background-color: #333333;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-top: 0;
-    position: relative;
     //cambiar.
     width: 72.5em;
     margin: 0 auto;
@@ -373,7 +375,7 @@ select {
 }
 
 .botonera {
-    height: 3.833em;
+    height: 4em;
     margin: 1.667em 0 1.667em 0;
     @include linear-gradient(to bottom, #f0f0f0 0%, #ebebeb 6%, #dddddd 17%, #d8d8d8 26%, #cdcdcd 68%, #cccccc 91%, #cdcdcd 94%, #d5d5d5 96%, #f4f4f4 100%);
     border-radius: 0.25em;
@@ -580,35 +582,6 @@ a {
     right: 0.08em;
 }
 
-.avisoFieldset {
-    font-size: 0.917em;
-
-    legend {
-        background-color: rgba(224, 178, 33, 0.44);
-        color: #504025;
-        font-weight: normal;
-        text-shadow: none;
-        font-size: 1em;
-        margin: 0;
-        padding: 0.272em;
-        border-bottom: 0;
-    }
-
-    &:hover legend {
-        background-color: #ffa300;
-        color: #000000;
-        font-weight: normal;
-    }
-
-    ul {
-        margin: 0;
-        border: 1px solid #EBABAB;
-        border-top: none;
-        padding: 0.543em;
-        color: #504025;
-        background-color: inherit;
-    }
-}
 
 .errorFieldset {
     font-size: 0.917em;
@@ -617,7 +590,7 @@ a {
         background-color: rgba(190, 46, 46, 0.24);
         color: #504025;
         text-shadow: none;
-        font-size: 1em;
+        font-size: 11px;
         font-weight: normal;
         margin: 0;
         padding: 0.272em;
@@ -647,7 +620,7 @@ a {
 .seccionConEstados {
 
     .texto {
-        display: inline-block;
+        float: left;
         margin-top: 0.333em;
         font-weight: normal;
     }
@@ -661,6 +634,12 @@ a {
         color: black;
         background-color: rgba(255, 255, 255, 0.9);
         font-weight: bold;
+
+        .aviso {
+            @include linear-gradient(to right, white 31%, #ffef99 100%);
+            box-shadow: inset -10px -7px 20px rgba(255, 173, 0, 0.2);
+            border: 1px solid #FFA608;
+        }
 
         fieldset {
             margin-bottom: 7px;
@@ -708,10 +687,6 @@ a {
             .texto {
                 margin-top: 0.317em;
             }
-
-            fieldset {
-                font-size: 0.873em;
-            }
         }
 
         &.error {
@@ -725,7 +700,8 @@ a {
         }
 
         .mostrarErrores {
-            display: block;
+            float: left;
+            clear: both;
             color: #900000;
             text-decoration: underline;
             font-weight: normal;
@@ -736,6 +712,37 @@ a {
         }
     }
 }
+
+.avisoFieldset {
+    font-size: 0.917em;
+
+    legend {
+        background-color: rgba(224, 178, 33, 0.44);
+        color: #504025;
+        font-weight: normal;
+        text-shadow: none;
+        font-size: 11px;
+        margin: 0;
+        padding: 0.272em;
+        border-bottom: 0;
+    }
+
+    &:hover legend {
+        background-color: #ffa300;
+        color: #000000;
+        font-weight: normal;
+    }
+
+    ul {
+        margin: 0;
+        border: 1px solid #EBABAB;
+        border-top: none;
+        padding: 0.543em;
+        color: #504025;
+        background-color: inherit;
+    }
+}
+
 
 .eliminar {
     color: black;
@@ -862,7 +869,6 @@ a {
     border-radius: 0.5em;
 }
 
-///Cambiar los 'px' por 'em'
 .menu-profesional {
     a {
         text-decoration: none;
@@ -942,7 +948,7 @@ a {
 #buscador .cabecera {
     padding-top: 0;
 }
-///Ver si la Jerarquia necesaria
+
 .busquedaSimple {
     .texto-busqueda {
         width: 84%;
@@ -1031,7 +1037,6 @@ a {
     }
 
     li {
-        display: block;
         width: 100%;
         padding: 7px;
         border-bottom: 1px solid #C0C0C0;
@@ -1073,6 +1078,7 @@ a {
     position: relative;
     background-color: #ddd;
     margin-top: 1em;
+    height:3.333em;
 
     h3 {
         &.first {
@@ -1093,7 +1099,7 @@ a {
         border-radius: 100%;
         text-indent: -3px;
         right: 8px;
-        top: 2px;
+        top: 6px;
         opacity: 0.6;
 
         &.disabled {
@@ -1129,32 +1135,58 @@ a {
         background-color: #fafafa;
         margin-right: 8px;
         float: left;
-        width: 39%;
+        width: 48%;
         padding: 0.833em;
+        hr{
+            float:left;
+            width: 100%;
+        }
+    }
+
+    &.horizontal {
+        .descripcion {
+            width: 60%;
+            display: inline-block;
+        }
+
+        .valor {
+            display: inline-block;
+            width: 38%;
+        }
     }
 
     .descripcion {
-        width: 60%;
         font-size: 0.9em;
         font-weight: bold;
-        display: inline-block;
     }
 
     .valor {
-        display: inline-block;
-        width: 35%;
         text-align: right;
     }
 
     .media {
+        width: 48%;
         float: left;
+        display: grid;
+        margin-top: 0;
+        margin-right: 0.417em;
+
+        .valor {
+            margin-right: 30px;
+        }
+    }
+
+    .datos-secuencia {
+        width: -moz-calc(100% - 150px);
+        width: -webkit-calc(100% - 150px);
+        width: calc(100% - 150px);
     }
 }
 
 
 .datos-conjunta {
     display: inline-block;
-    width: 150px;
+    width: 12.5em;
     background-color: #fafafa;
     padding: 0.833em;
 
@@ -1172,7 +1204,7 @@ a {
     fieldset {
         float: left;
         width: 49%;
-        height: 300px;
+        height: 25em;
         @include transform-scale(1,1,250ms,ease-out);
 
         &:hover {
@@ -1185,7 +1217,7 @@ a {
 
         li {
             margin: 0 1px 0 1px;
-            padding: 8px;
+            padding: 0.667em;
             border-bottom: 1px solid #c5c5c5;
             border-top: 1px solid #ffffff;
             @include linear-gradient(to bottom, #f1f1f1 0%, #eeeeee 4%, #eeeeee 55%, #dbdbdb 99%, white 100%);
@@ -1193,15 +1225,15 @@ a {
 
         ul {
             margin: 0;
-            margin-bottom: 50px;
-            max-height: 150px;
+            margin-bottom: 4.167em;
+            max-height: 12.5em;
         }
 
         legend:before {
             content: " ";
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 15px solid #666;
+            border-left: 0.769em solid transparent;
+            border-right: 0.769em solid transparent;
+            border-top: 0.962em solid #666;
             position: absolute;
             top: 36px;
             left: 26px;
@@ -1229,13 +1261,13 @@ a {
 
     .valor {
         float: right;
-        margin-right: 20px;
+        margin-right: 1.667em;
         font-weight: bold;
     }
 }
 
 .asignacionTributaria .nombre {
-    margin-left: 20px;
+    margin-left: 1.667em;
     font-weight: bold;
 }
 
@@ -1243,11 +1275,11 @@ a {
     position: absolute;
     width: 100%;
     text-align: center;
-    bottom: 20px;
+    bottom: 1.667em;
 
     .btn {
-        padding-left: 26px;
-        padding-right: 26px;
+        padding-left: 2.167em;
+        padding-right: 2.167em;
     }
 }
 
@@ -1272,7 +1304,6 @@ a {
     }
 }
 
-
 .modalidad-entrega-unica {
     @include linear-gradient(to right, #b50306 1%, #6d0019 100%);
     color: white;
@@ -1288,67 +1319,9 @@ a {
     text-indent: 9999em;
 }
 
-#datosFiscalesOverlay table {
-    border: none;
-    table-layout: fixed;
-}
+////////////////////////Ventana///////////////////////////
 
-#datosFiscalesOverlay h4 {
-    font-size: 16px !important;
-}
-
-#datosFiscalesOverlay h5 {
-    color: #555555;
-    border-radius: 5px;
-    background-color: #eeeeee;
-    margin-right: 20px;
-    font-weight: normal;
-}
-
-#datosFiscalesOverlay .ancla {
-    display: block;
-    float: left;
-    width: 200px;
-    position: relative;
-}
-
-#datosFiscalesOverlay .cabecera {
-    @include linear-gradient(to bottom, #f2f5f6 0%, #e3eaed 37%, #c8d7dc 98%, white 100%);
-    font-weight: bold;
-    text-align: left;
-    width: 100%;
-}
-
-#datosFiscalesOverlay .scrollHorizontal {
-    display: block;
-    float: left;
-    width: 550px;
-    position: relative;
-    overflow-x: auto;
-}
-
-#datosFiscalesOverlay .scrollHorizontal table {
-    max-width: 10000px;
-}
-
-#datosFiscalesOverlay td {
-    width: 200px !important;
-    padding: 5px;
-    border: 1px solid silver;
-}
-
-#datosFiscalesOverlay .format-number {
-    color: #202020;
-}
-
-#datosFiscalesOverlay .format-string {
-    color: #0f0f0f;
-}
-
-////////////////////////Ventana/////////////////////////////
-//Ocultar por ahora la ventana.
-
-#ayudaOverlay, #datosFiscalesOverlay {
+#ayudaOverlay {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -1357,56 +1330,118 @@ a {
     left: 0;
     z-index: 999999;
     display: none;
+
+
+    .ventana {
+        top: 60px;
+        bottom: 60px;
+        left: 50%;
+        width: 800px;
+        margin-left: -400px;
+        position: absolute;
+        background-color: white;
+        padding: 60px;
+        border-radius: 8px;
+
+        > h3 {
+            position: absolute;
+            top: 0;
+            left: 10px;
+        }
+    }
+
+    .cerrarAyuda {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        background-image: url(../img/closebtn.png);
+        width: 45px;
+        height: 45px;
+        background-color: transparent;
+        border: none;
+    }
+
+    .tablaAnclada {
+        margin-bottom: 20px;
+    }
+
+    .scrollVentana {
+        top: 60px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        position: absolute;
+        overflow-y: auto;
+    }
+
+    .panel {
+        margin-right: 10px;
+    }
+
+    .contenido {
+        padding: 15px;
+    }
 }
 
-#ayudaOverlay .ventana, #datosFiscalesOverlay .ventana {
-    top: 60px;
-    bottom: 60px;
-    left: 50%;
-    width: 800px;
-    margin-left: -400px;
-    position: absolute;
-    background-color: white;
-    padding: 60px;
-    border-radius: 8px;
-}
+#datosFiscalesOverlay {
+    @extend #ayudaOverlay;
 
-#ayudaOverlay .ventana > h3, #datosFiscalesOverlay .ventana > h3 {
-    position: absolute;
-    top: 0;
-    left: 10px;
-}
+    table {
+        border: none;
+        table-layout: fixed;
+    }
 
-#ayudaOverlay .cerrarAyuda, #datosFiscalesOverlay .cerrarAyuda {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    background-image: url(../img/closebtn.png);
-    width: 45px;
-    height: 45px;
-    background-color: transparent;
-    border: none;
-}
+    h4 {
+        font-size: 16px !important;
+    }
 
-#ayudaOverlay .tablaAnclada, #datosFiscalesOverlay .tablaAnclada {
-    margin-bottom: 20px;
-}
+    h5 {
+        color: #555555;
+        border-radius: 5px;
+        background-color: #eeeeee;
+        margin-right: 20px;
+        font-weight: normal;
+    }
 
-#ayudaOverlay .scrollVentana, #datosFiscalesOverlay .scrollVentana {
-    top: 60px;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    position: absolute;
-    overflow-y: auto;
-}
+    .ancla {
+        display: block;
+        float: left;
+        width: 200px;
+        position: relative;
+    }
 
-#ayudaOverlay .panel, #datosFiscalesOverlay .panel {
-    margin-right: 10px;
-}
+    .cabecera {
+        @include linear-gradient(to bottom, #f2f5f6 0%, #e3eaed 37%, #c8d7dc 98%, white 100%);
+        font-weight: bold;
+        text-align: left;
+        width: 100%;
+    }
 
-#ayudaOverlay .contenido, #datosFiscalesOverlay .contenido {
-    padding: 15px;
+    .scrollHorizontal {
+        display: block;
+        float: left;
+        width: 550px;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .scrollHorizontal table {
+        max-width: 10000px;
+    }
+
+    td {
+        width: 200px !important;
+        padding: 5px;
+        border: 1px solid silver;
+    }
+
+    .format-number {
+        color: #202020;
+    }
+
+    .format-string {
+        color: #0f0f0f;
+    }
 }
 
 ////////////////////////Ventana///////////////////////////
