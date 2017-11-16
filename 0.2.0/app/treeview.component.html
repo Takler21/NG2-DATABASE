@@ -1,0 +1,7 @@
+﻿<ul *ngIf="hijas[id]">
+    <li *ngFor="let hija of hijas[id]">
+        {{hija}}
+        <!--Aqui es donde se da la recursividad-->
+        <treeview [hijas]="hijas" [id]="hija"></treeview>
+    </li>
+</ul>

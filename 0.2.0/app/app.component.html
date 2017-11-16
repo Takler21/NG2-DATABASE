@@ -1,0 +1,20 @@
+﻿<div>
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+
+        </div>
+    </nav>
+    <div class='container'>
+
+       <!--Aqui es donde pondremos el menu Desplegable.-->
+        <h2>Segunda prueba</h2>
+        <ul *ngIf="primN">
+            <li *ngFor="let item of primN">
+                {{item}}
+              <treeview [hijas]="hijas" [id]="item"></treeview>
+            </li>
+        </ul>
+        
+        <button (click)="mostrar()">boton</button>
+    </div>
+</div>          
