@@ -1,0 +1,28 @@
+﻿<div>
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+
+        </div>
+    </nav>
+    <div class='container'>
+
+        <!--Aqui es donde pondremos el menu Desplegable.-->
+        <h2>Segunda prueba</h2>
+        <div style="width:100%;overflow:hidden">
+            <input type="text" name="buscador" [(ngModel)]="buscVal" [typeahead]="esquema"
+                   typeaheadOptionField="id" typeaheadMinLength="0" class="form-control">
+            <button type="button" class="btn btn-primary" style="float:left" (click)="comprobar()">Buscar</button>
+        </div>
+        <ul *ngIf="primN" style="float:left">
+            <li *ngFor="let item of primN" [hidden]="mostrar.indexOf(item)==-1">
+
+                <my-collap [nombre]="item" [isOpen]="desplegados[item]">
+                    <treeview [hijas]="hijas" [id]="item" [desplegados]="desplegados"></treeview>
+                </my-collap>
+
+            </li>
+        </ul>
+        <div class="panel panel-default">
+
+        </div>
+</div>          

@@ -1,0 +1,9 @@
+﻿<ul *ngIf="hijas[id]">
+    <li *ngFor="let hija of hijas[id]">
+        <ng-template [ngIf]="!hijas[hija]">{{hija}}</ng-template>
+        <my-collap *ngIf="hijas[hija]" [nombre]="hija" [isOpen]="desplegados[hija]">
+            <!--Aqui es donde se da la recursividad-->
+            <treeview [hijas]="hijas" [id]="hija" [desplegados]="desplegados"></treeview>
+        </my-collap>
+    </li>
+</ul>

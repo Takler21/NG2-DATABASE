@@ -1,0 +1,27 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+h1 {
+    text-align:center;
+}
+/*ul {
+    background-color:cornflowerblue
+}*/
+
+li {
+    list-style: none;
+
+}
+
+input.form-control {
+width:30%;
+float:left;
+}
+
+    /*li:hover {
+        background-color:darkturquoise
+    }*/
