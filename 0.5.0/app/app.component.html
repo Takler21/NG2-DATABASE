@@ -1,0 +1,38 @@
+﻿
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+
+        </div>
+    </nav>
+    <div class='container'>
+
+        <!--Aqui es donde pondremos el menu Desplegable.-->
+        <h2>Segunda prueba</h2>
+        <div *ngIf="esquema">
+            
+        </div>
+        <div class="buscador">
+            <input type="text" name="buscador" [(ngModel)]="buscVal" [typeahead]="esquema"
+                   typeaheadOptionField="id" typeaheadMinLength="0" class="form-control">
+            <button type="button" class="btn btn-primary busc"  (click)="comprobar()">Buscar</button>
+        </div>
+        <ul *ngIf="primN" class="primNivel">
+            <li *ngFor="let item of primN" [hidden]="mostrar.indexOf(item)==-1">
+
+                <my-collap [nombre]="item" [isOpen]="desplegados[item]" (click)="verInfo(item)">
+                    <treeview [hijas]="hijas" [id]="item" [desplegados]="desplegados" [indiceEsq]="indiceEsq" (imp)="importado = $event"></treeview>
+                </my-collap>
+
+            </li>
+        </ul>
+        <div class="panel panel-default infoObj">
+            <h3>Datos</h3>
+            <form *ngIf="campos">
+                <div *ngFor="let key of campos" class="form-group">
+                    <label>{{key}}</label>
+                    <input *ngIf="!importado" type="text" class="form-control" disabled>
+                    <input *ngIf="importado" [(ngModel)]="importado[key]" [name]="key" type="text" class="form-control" disabled>
+                </div>
+            </form>
+        </div>
+</div>          
