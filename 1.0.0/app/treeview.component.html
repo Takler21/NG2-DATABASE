@@ -1,0 +1,20 @@
+﻿<ul *ngIf="hijas[id]">
+    <li *ngFor="let hija of hijas[id]">
+        <ng-template [ngIf]="optionals[hija]">
+            <my-collap [nombre]="optionals[hija][0]" [isOpen]="desplegados[optionals[hija][0]]" [indiceEsq]="indiceEsq" (click)="mandar()" (imp)="importado = $event">
+                <ul>
+                    <li>
+                        <a (click)="changeImp(optionals[hija][1])">{{optionals[hija][1]}}</a>
+                    </li>
+                </ul>
+            </my-collap>
+        </ng-template>
+        <ng-template [ngIf]="!optionals[hija]">
+            <ng-template [ngIf]="!hijas[hija]"><a (click)="changeImp(hija)">{{hija}}</a></ng-template>
+            <my-collap *ngIf="hijas[hija]" [nombre]="hija" [isOpen]="desplegados[hija]" [indiceEsq]="indiceEsq" (click)="mandar()" (imp)="importado = $event">
+                <!--Aqui es donde se da la recursividad-->
+                <treeview [hijas]="hijas" [id]="hija" [desplegados]="desplegados" [indiceEsq]="indiceEsq" (impo)="importado = $event" [optionals]="optionals"></treeview>
+            </my-collap>
+        </ng-template>
+    </li>
+</ul>

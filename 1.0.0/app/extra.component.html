@@ -1,0 +1,10 @@
+﻿<div class="panel panel-default infoObj">
+    <h3>Datos 2</h3>
+    <form *ngIf="literal">
+        <div *ngFor="let key of campos" class="form-group">
+            <label>{{key}}</label>
+            <input *ngIf="!importado" type="text" class="form-control" disabled>
+            <input *ngIf="importado" [(ngModel)]="importado[key]" [name]="key" type="text" class="form-control" disabled>
+        </div>
+    </form>
+</div>

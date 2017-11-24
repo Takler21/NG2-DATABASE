@@ -1,0 +1,56 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+h1, h3 {
+    text-align:center;
+}
+
+/*ul {
+    background-color:cornflowerblue
+}*/
+
+li {
+    list-style: none;
+
+}
+
+.buscador input.form-control {
+width:30%;
+float:left;
+}
+
+.buscador {
+    width:100%;
+    overflow:hidden;
+}
+
+.busc {
+    float:left;
+}
+
+.primNivel {
+float:left;
+
+}
+
+    .primNivel li a {
+        cursor:pointer;
+    }
+
+.infoObj {
+float:right;
+width:50%;
+}
+    .infoObj form {
+    margin:1em;
+    }
+        .infoObj form input {
+        height:auto;
+        }
+    /*li:hover {
+        background-color:darkturquoise
+    }*/
