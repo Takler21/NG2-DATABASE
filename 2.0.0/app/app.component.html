@@ -1,0 +1,42 @@
+﻿
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+            <div class="buscador">
+              
+                    <input type="text" name="buscador" [(ngModel)]="buscVal" [typeahead]="esquema"
+                           typeaheadOptionField="id" typeaheadMinLength="0" class="form-control">
+                    <button type="button" class="btn btn-primary busc" (click)="comprobar()">Buscar</button>
+
+            </div>
+        </div>
+    </nav>
+    <div class='container'>
+
+        <h2>Segunda prueba</h2>
+        
+        <ul *ngIf="primN" class="primNivel">
+            <li *ngFor="let item of primN" [hidden]="mostrar.indexOf(item)==-1">
+                
+                    <ng-template [ngIf]="!hijas[item]">
+                        <a (click)="verInfo(item)">{{item}}</a>
+                    </ng-template>
+                    <my-collap *ngIf="hijas[item]" [nombre]="item" [isOpen]="desplegados[item]" [indiceEsq]="indiceEsq" (imp)="importado = $event">
+                        <treeview [hijas]="hijas" [id]="item" [desplegados]="desplegados" [optionals]="optionals" [indiceEsq]="indiceEsq" (impo)="importado = $event"></treeview>
+                    </my-collap>
+
+            </li>
+        </ul>
+        <div class="panel panel-default infoObj">
+            <h3>Datos</h3>
+            <form *ngIf="campos">
+                <div *ngFor="let key of campos" class="form-group">
+                    <label>{{key}}</label>
+                    <input *ngIf="!importado" type="text" class="form-control" readonly>
+                    <input *ngIf="importado" [(ngModel)]="importado[key]" [name]="key" type="text" class="form-control" readonly>
+                </div>
+            </form>
+        </div>
+        
+        <panel-extra *ngIf="importado" [id]="importado.id"></panel-extra>
+        <panel-extra *ngIf="!importado"></panel-extra>
+</div>          

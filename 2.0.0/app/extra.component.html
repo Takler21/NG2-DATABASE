@@ -1,0 +1,27 @@
+﻿<div *ngIf="guide && id && configuracionHD" class="panel panel-default infoObj">
+    <h3>Datos 2</h3>
+    <form *ngIf="guide[id]">
+        <h4>Literales</h4>
+        <div class="form-group">
+            <label *ngIf="guide[id][0]" class="form-control">{{guide[id][0].language}}</label>
+            <textarea *ngIf="guide[id][0]" class="form-control" rows="6" readonly>{{guide[id][0].text}}</textarea>
+        </div>
+        <div class="form-group">
+            <label *ngIf="guide[id][1]" class="form-control">{{guide[id][1].language}}</label>
+            <textarea *ngIf="guide[id][1]" class="form-control" rows="6" readonly>{{guide[id][1].text}}</textarea>
+        </div>
+    </form>
+    <h4 *ngIf="!guide[id]">El objeto seleccionado no se encuentra en literales</h4>
+    <hr />
+    <form *ngIf="configuracionHD[id]">
+        <h4>ConfiguracionHD</h4>
+        <div class="form-group">
+            <input *ngFor="let cons of configuracionHD[id]" type="text" class="form-control" [value]="cons" style="margin-bottom:1em" readonly />
+        </div>
+    </form>
+    <h4 *ngIf="!configuracionHD[id]">El objeto seleccionado no se encuentra en ConfiguracionHD</h4>
+</div>
+<div *ngIf="!id" class="panel panel-default infoObj">
+    <h3>Datos 2</h3>
+    <h4>Seleccione un elemento</h4>
+</div>

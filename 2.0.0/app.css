@@ -1,0 +1,79 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+/*ul {
+    background-color:cornflowerblue
+}*/
+
+li {
+    list-style: none;
+}
+
+.buscador input.form-control {
+    width: 20.204em;
+    float: left;
+}
+
+.buscador {
+    float: right;
+    margin-top: 0.5em;
+}
+
+.busc {
+    float: left;
+}
+
+.primNivel {
+    float: left;
+    margin-right:1em;
+}
+
+    .primNivel li a {
+        cursor: pointer;
+        font-weight:bold;
+        text-shadow: 0.1px 0.2px 0.5px #399;
+    }
+
+.infoObj {
+    float: left;
+    width: 34%;
+}
+
+    .infoObj form {
+        margin: 1em;
+    }
+
+        .infoObj form input {
+            height: auto;
+            cursor:default;
+        }
+
+.buscadorbloque {
+width:100%;
+float:right;
+padding:0;
+margin:0;
+}
+/*li:hover {
+        background-color:darkturquoise
+    }*/
+@media (max-width: 1199px) {
+
+    .primNivel {
+        width:90%;
+    }
+    .infoObj {
+    float: left;
+    width: 50%;
+}
+
+}
